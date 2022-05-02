@@ -29,3 +29,15 @@ lazy val scalaXml = project
       "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
     ),
   )
+
+lazy val docs = project
+  .in(file("site"))
+  .dependsOn(scalaXml)
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.http4s" %%% "http4s-dsl" % http4sVersion,
+      "org.http4s" %%% "http4s-circe" % http4sVersion,
+      "io.circe" %%% "circe-generic" % "0.14.1",
+    )
+  )
+  .enablePlugins(Http4sOrgSitePlugin)
