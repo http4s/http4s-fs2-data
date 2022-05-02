@@ -8,7 +8,7 @@ val Scala213 = "2.13.8"
 ThisBuild / crossScalaVersions := Seq("2.12.15", Scala213, "3.1.1")
 ThisBuild / scalaVersion := Scala213
 
-lazy val root = project.in(file(".")).aggregate(scalaXml)
+lazy val root = project.in(file(".")).aggregate(scalaXml).enablePlugins(NoPublishPlugin)
 
 val http4sVersion = "0.23.11"
 val scalaXmlVersion = "2.1.0"
