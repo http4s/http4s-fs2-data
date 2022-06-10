@@ -1,5 +1,4 @@
-ThisBuild / tlBaseVersion := "0.23"
-ThisBuild / tlMimaPreviousVersions ++= (0 to 11).map(y => s"0.23.$y").toSet
+ThisBuild / tlBaseVersion := "0.24"
 ThisBuild / developers := List(
   tlGitHubDev("rossabaker", "Ross A. Baker")
 )
@@ -12,6 +11,7 @@ lazy val root = project.in(file(".")).aggregate(scalaXml).enablePlugins(NoPublis
 
 val http4sVersion = "0.23.12"
 val scalaXmlVersion = "2.1.0"
+val fs2DataVersion = "1.4.0"
 val munitVersion = "0.7.29"
 val munitCatsEffectVersion = "1.0.7"
 
@@ -24,6 +24,7 @@ lazy val scalaXml = project
     libraryDependencies ++= Seq(
       "org.http4s" %%% "http4s-core" % http4sVersion,
       "org.scala-lang.modules" %%% "scala-xml" % scalaXmlVersion,
+      "org.gnieh" %%% "fs2-data-xml-scala" % fs2DataVersion,
       "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
       "org.typelevel" %%% "munit-cats-effect-3" % munitCatsEffectVersion % Test,
       "org.http4s" %%% "http4s-laws" % http4sVersion % Test,

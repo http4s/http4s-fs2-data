@@ -18,19 +18,19 @@ package org.http4s
 package scalaxml
 
 import cats.effect.Concurrent
+import cats.syntax.all._
+import fs2.data.xml.XmlException
+import fs2.data.xml.scalaXml._
 import org.http4s.Charset.`UTF-8`
 import org.http4s.headers.`Content-Type`
 
-import java.io.ByteArrayInputStream
 import java.io.StringWriter
 import javax.xml.parsers.SAXParserFactory
-import scala.util.control.NonFatal
 import scala.xml.Elem
-import scala.xml.InputSource
-import scala.xml.SAXParseException
 import scala.xml.XML
 
 trait ElemInstances {
+  @deprecated("0.23.12", "This factory is no longer used")
   protected def saxFactory: SAXParserFactory
 
   implicit def xmlEncoder[F[_]](implicit charset: Charset = `UTF-8`): EntityEncoder[F, Elem] =
@@ -52,18 +52,23 @@ trait ElemInstances {
   implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Elem] = {
     import EntityDecoder._
     decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) { msg =>
-      val source = new InputSource()
-      msg.charset.foreach(cs => source.setEncoding(cs.nioCharset.name))
-
-      collectBinary(msg).flatMap[DecodeFailure, Elem] { chunk =>
-        source.setByteStream(new ByteArrayInputStream(chunk.toArray))
-        val saxParser = saxFactory.newSAXParser()
-        try DecodeResult.successT[F, Elem](XML.loadXML(source, saxParser))
-        catch {
-          case e: SAXParseException =>
-            DecodeResult.failureT(MalformedMessageBodyFailure("Invalid XML", Some(e)))
-          case NonFatal(e) => DecodeResult(F.raiseError[Either[DecodeFailure, Elem]](e))
-        }
+      DecodeResult {
+        msg.bodyText
+          .through(fs2.data.xml.events())
+          .through(fs2.data.xml.dom.documents)
+          .head
+          .compile
+          .lastOrError
+          .map {
+            _.docElem match {
+              case e: Elem => Right(e)
+              case _ => Left(MalformedMessageBodyFailure("Invalid XML"))
+            }
+          }
+          .recover { case ex: XmlException =>
+            Left(MalformedMessageBodyFailure("Invalid XML", Some(ex)))
+          }
+          .widen
       }
     }
   }
