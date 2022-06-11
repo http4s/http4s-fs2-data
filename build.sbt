@@ -7,7 +7,7 @@ val Scala213 = "2.13.8"
 ThisBuild / crossScalaVersions := Seq("2.12.15", Scala213, "3.1.2")
 ThisBuild / scalaVersion := Scala213
 
-lazy val root = project.in(file(".")).aggregate(scalaXml).enablePlugins(NoPublishPlugin)
+lazy val root = tlCrossRootProject.aggregate(scalaXml)
 
 val http4sVersion = "0.23.12"
 val scalaXmlVersion = "2.1.0"
@@ -15,7 +15,8 @@ val fs2DataVersion = "1.4.0"
 val munitVersion = "0.7.29"
 val munitCatsEffectVersion = "1.0.7"
 
-lazy val scalaXml = project
+lazy val scalaXml = crossProject(JVMPlatform, JSPlatform)
+  .crossType(CrossType.Pure)
   .in(file("scala-xml"))
   .settings(
     name := "http4s-scala-xml",
@@ -33,7 +34,7 @@ lazy val scalaXml = project
 
 lazy val docs = project
   .in(file("site"))
-  .dependsOn(scalaXml)
+  .dependsOn(scalaXml.jvm)
   .settings(
     libraryDependencies ++= Seq(
       "org.http4s" %%% "http4s-dsl" % http4sVersion,
