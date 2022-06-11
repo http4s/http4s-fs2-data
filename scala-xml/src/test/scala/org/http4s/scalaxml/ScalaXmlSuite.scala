@@ -32,7 +32,7 @@ import org.scalacheck.Prop._
 import org.typelevel.ci._
 
 import java.nio.charset.StandardCharsets
-import scala.xml.Elem
+import scala.xml.Document
 
 class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckSuite {
   def getBody(body: EntityBody[IO]): IO[String] =
@@ -51,8 +51,8 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckSuite {
       .map(_.getOrElse(""))
 
   val server: Request[IO] => IO[Response[IO]] = { req =>
-    req.decode { (elem: Elem) =>
-      IO.pure(Response[IO](Ok).withEntity(elem.label))
+    req.decode { (doc: Document) =>
+      IO.pure(Response[IO](Ok).withEntity(doc.docElem.label))
     }
   }
 
@@ -144,7 +144,7 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckSuite {
     val body = Stream.chunk(bytes)
     val msg = Request[IO](Method.POST, headers = Headers(Header.Raw(ci"Content-Type", contentType)))
       .withBodyStream(body)
-    msg.as[Elem].map(_ \\ "hello" \@ "name").assertEquals(name)
+    msg.as[Document].map(_ \\ "hello" \@ "name").assertEquals(name)
   }
 
   test("parse UTF-8 charset with explicit encoding") {

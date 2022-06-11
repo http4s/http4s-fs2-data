@@ -25,6 +25,7 @@ import org.http4s.Charset.`UTF-8`
 import org.http4s.headers.`Content-Type`
 
 import java.io.StringWriter
+import scala.xml.Document
 import scala.xml.Elem
 import scala.xml.XML
 
@@ -41,12 +42,10 @@ trait ElemInstances {
       .withContentType(`Content-Type`(MediaType.application.xml).withCharset(charset))
 
   /** Handles a message body as XML.
-    *
-    * TODO Not an ideal implementation.  Would be much better with an asynchronous XML parser, such as Aalto.
-    *
-    * @return an XML element
+    * 
+    * @return an XML [[Document]]
     */
-  implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Elem] = {
+  implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Document] = {
     import EntityDecoder._
     decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) { msg =>
       DecodeResult {
@@ -56,12 +55,7 @@ trait ElemInstances {
           .head
           .compile
           .lastOrError
-          .map {
-            _.docElem match {
-              case e: Elem => Right(e)
-              case _ => Left(MalformedMessageBodyFailure("Invalid XML"))
-            }
-          }
+          .map(Either.right[MalformedMessageBodyFailure, Document](_))
           .recover { case ex: XmlException =>
             Left(MalformedMessageBodyFailure("Invalid XML", Some(ex)))
           }
