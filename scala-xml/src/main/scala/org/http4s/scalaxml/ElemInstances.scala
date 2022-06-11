@@ -25,13 +25,10 @@ import org.http4s.Charset.`UTF-8`
 import org.http4s.headers.`Content-Type`
 
 import java.io.StringWriter
-import javax.xml.parsers.SAXParserFactory
 import scala.xml.Elem
 import scala.xml.XML
 
 trait ElemInstances {
-  @deprecated("0.23.12", "This factory is no longer used")
-  protected def saxFactory: SAXParserFactory
 
   implicit def xmlEncoder[F[_]](implicit charset: Charset = `UTF-8`): EntityEncoder[F, Elem] =
     EntityEncoder
