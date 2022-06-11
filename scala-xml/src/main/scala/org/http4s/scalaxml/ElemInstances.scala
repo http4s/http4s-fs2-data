@@ -19,6 +19,8 @@ package scalaxml
 
 import cats.effect.Concurrent
 import cats.syntax.all._
+import fs2.Stream
+import fs2.data.xml.XmlEvent
 import fs2.data.xml.XmlException
 import fs2.data.xml.scalaXml._
 import org.http4s.Charset.`UTF-8`
@@ -41,16 +43,21 @@ trait ElemInstances {
       }
       .withContentType(`Content-Type`(MediaType.application.xml).withCharset(charset))
 
+  implicit def xmlEvents[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Stream[F, XmlEvent]] = {
+    import EntityDecoder._
+    decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) { msg =>
+      DecodeResult.successT(msg.bodyText.through(fs2.data.xml.events()))
+    }
+  }
+
   /** Handles a message body as XML.
     *
     * @return an XML [[Document]]
     */
-  implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Document] = {
-    import EntityDecoder._
-    decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) { msg =>
+  implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Document] =
+    xmlEvents.flatMapR { events =>
       DecodeResult {
-        msg.bodyText
-          .through(fs2.data.xml.events())
+        events
           .through(fs2.data.xml.dom.documents)
           .head
           .compile
@@ -62,5 +69,4 @@ trait ElemInstances {
           .widen
       }
     }
-  }
 }
