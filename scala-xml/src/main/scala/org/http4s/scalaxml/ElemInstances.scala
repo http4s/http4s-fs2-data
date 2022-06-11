@@ -42,7 +42,7 @@ trait ElemInstances {
       .withContentType(`Content-Type`(MediaType.application.xml).withCharset(charset))
 
   /** Handles a message body as XML.
-    * 
+    *
     * @return an XML [[Document]]
     */
   implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Document] = {
