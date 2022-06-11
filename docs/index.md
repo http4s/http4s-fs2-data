@@ -30,7 +30,7 @@ class JsonXmlHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
     * </person>
     */
   private object Person {
-    def fromXml(elem: Elem): Person = {
+    def fromXml(elem: Document): Person = {
       val name = (elem \\ "name").text
       val age = (elem \\ "age").text
       Person(name, age.toInt)
