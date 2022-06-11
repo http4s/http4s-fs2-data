@@ -43,12 +43,11 @@ trait ElemInstances {
       }
       .withContentType(`Content-Type`(MediaType.application.xml).withCharset(charset))
 
-  implicit def xmlEvents[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Stream[F, XmlEvent]] = {
-    import EntityDecoder._
-    decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) { msg =>
-      DecodeResult.successT(msg.bodyText.through(fs2.data.xml.events()))
+  implicit def xmlEvents[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Stream[F, XmlEvent]] =
+    EntityDecoder.decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) {
+      msg =>
+        DecodeResult.successT(msg.bodyText.through(fs2.data.xml.events()))
     }
-  }
 
   /** Handles a message body as XML.
     *
