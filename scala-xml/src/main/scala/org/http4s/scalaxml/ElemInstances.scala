@@ -17,7 +17,10 @@
 package org.http4s
 package scalaxml
 
+import cats.data.EitherT
+import cats.effect.Async
 import cats.effect.Concurrent
+import cats.syntax.all._
 import org.http4s.Charset.`UTF-8`
 import org.http4s.headers.`Content-Type`
 
@@ -49,7 +52,8 @@ trait ElemInstances {
     *
     * @return an XML element
     */
-  implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Elem] = {
+  @deprecated("Blocks. Use xmlDecoder with an Async constraint.", "0.23.12")
+  def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Elem] = {
     import EntityDecoder._
     decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) { msg =>
       val source = new InputSource()
@@ -67,4 +71,25 @@ trait ElemInstances {
       }
     }
   }
+
+  implicit def xmlDecoder[F[_]](implicit F: Async[F]): EntityDecoder[F, Elem] = {
+    import EntityDecoder._
+    decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) { msg =>
+      val source = new InputSource()
+      msg.charset.foreach(cs => source.setEncoding(cs.nioCharset.name))
+
+      collectBinary(msg).flatMap[DecodeFailure, Elem] { chunk =>
+        source.setByteStream(new ByteArrayInputStream(chunk.toArray))
+        val saxParser = saxFactory.newSAXParser()
+        EitherT(
+          F.blocking(XML.loadXML(source, saxParser))
+            .map(Either.right[DecodeFailure, Elem](_))
+            .recover { case e: SAXParseException =>
+              Left(MalformedMessageBodyFailure("Invalid XML", Some(e)))
+            }
+        )
+      }
+    }
+  }
+
 }
