@@ -38,7 +38,7 @@ class JsonXmlHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
   }
 
   private def personXmlDecoder: EntityDecoder[F, Person] =
-    org.http4s.scalaxml.xml[F].map(Person.fromXml)
+    org.http4s.scalaxml.xmlDecoder[F].map(Person.fromXml)
 
   implicit private def jsonXmlDecoder: EntityDecoder[F, Person] =
     jsonOf[F, Person].orElse(personXmlDecoder)
