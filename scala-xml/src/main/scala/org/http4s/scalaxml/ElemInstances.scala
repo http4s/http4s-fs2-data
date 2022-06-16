@@ -46,7 +46,7 @@ trait ElemInstances {
   implicit def xmlEvents[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Stream[F, XmlEvent]] =
     EntityDecoder.decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) {
       msg =>
-        DecodeResult.successT(msg.bodyText.through(fs2.data.xml.events()))
+        DecodeResult.successT(msg.bodyText.through(fs2.data.xml.events(includeComments = true)))
     }
 
   /** Handles a message body as XML.
