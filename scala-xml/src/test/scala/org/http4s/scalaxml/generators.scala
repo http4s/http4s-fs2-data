@@ -409,7 +409,10 @@ object generators {
     for {
       n <- Gen.poisson(5)
       s <- Gen.stringOfN(n, Gen.oneOf(char))
-    } yield new String(s.toArray)
+      // Serialization trims whitespace, so we normalize ours
+      tb = new TextBuffer()
+      _ = tb.append(s)
+    } yield tb.sb.toString
 
   val genAttribute: Gen[Attribute] =
     for {
