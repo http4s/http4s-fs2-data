@@ -43,18 +43,32 @@ trait ElemInstances {
       }
       .withContentType(`Content-Type`(MediaType.application.xml).withCharset(charset))
 
-  implicit def xmlEvents[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Stream[F, XmlEvent]] =
+  implicit def xmlEvents[F[_]: Concurrent]: EntityDecoder[F, Stream[F, XmlEvent]] =
+    xmlEvents(true)
+
+  def xmlEvents[F[_]](
+      includeComments: Boolean
+  )(implicit F: Concurrent[F]): EntityDecoder[F, Stream[F, XmlEvent]] =
     EntityDecoder.decodeBy(MediaType.text.xml, MediaType.text.html, MediaType.application.xml) {
       msg =>
-        DecodeResult.successT(msg.bodyText.through(fs2.data.xml.events(includeComments = true)))
+        DecodeResult.successT(msg.bodyText.through(fs2.data.xml.events(includeComments)))
     }
 
   /** Handles a message body as XML.
     *
     * @return an XML [[Document]]
     */
-  implicit def xml[F[_]](implicit F: Concurrent[F]): EntityDecoder[F, Document] =
-    xmlEvents.flatMapR { events =>
+  implicit def xmlDocument[F[_]: Concurrent]: EntityDecoder[F, Document] =
+    xmlDocument(true)
+
+  /** Handles a message body as XML.
+    *
+    * @return an XML [[Document]]
+    */
+  def xmlDocument[F[_]](
+      includeComments: Boolean
+  )(implicit F: Concurrent[F]): EntityDecoder[F, Document] =
+    xmlEvents(includeComments).flatMapR { events =>
       DecodeResult {
         events
           .through(fs2.data.xml.dom.documents)
