@@ -22,10 +22,10 @@ lazy val core = crossProject(JVMPlatform, JSPlatform)
   .settings(
     name := "http4s-fs2-data",
     libraryDependencies ++= Seq(
-      "org.http4s" %%% "http4s-core" % "0.23.11",
+      "org.http4s" %%% "http4s-core" % "0.23.12",
       "org.scalameta" %%% "munit" % "0.7.29" % Test,
-      "org.typelevel" %%% "munit-cats-effect-3" % "1.0.7" % Test
-    )
+      "org.typelevel" %%% "munit-cats-effect-3" % "1.0.7" % Test,
+    ),
   )
 
 lazy val docs = project.in(file("site")).enablePlugins(TypelevelSitePlugin)
