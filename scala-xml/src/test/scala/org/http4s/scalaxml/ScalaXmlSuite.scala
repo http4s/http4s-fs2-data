@@ -24,17 +24,20 @@ import fs2.Stream
 import fs2.text.decodeWithCharset
 import fs2.text.utf8
 import munit.CatsEffectSuite
-import munit.ScalaCheckSuite
+import munit.ScalaCheckEffectSuite
 import org.http4s.Status.Ok
 import org.http4s.headers.`Content-Type`
 import org.http4s.laws.discipline.arbitrary._
+import org.http4s.scalaxml.generators._
 import org.scalacheck.Prop._
+import org.scalacheck.effect.PropF._
 import org.typelevel.ci._
 
 import java.nio.charset.StandardCharsets
+import scala.xml.Document
 import scala.xml.Elem
 
-class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckSuite {
+class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
   def getBody(body: EntityBody[IO]): IO[String] =
     body.through(utf8.decode).foldMonoid.compile.lastOrError
 
@@ -51,15 +54,19 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckSuite {
       .map(_.getOrElse(""))
 
   val server: Request[IO] => IO[Response[IO]] = { req =>
-    req.decode { (elem: Elem) =>
-      IO.pure(Response[IO](Ok).withEntity(elem.label))
+    req.decode { (doc: Document) =>
+      IO.pure(Response[IO](Ok).withEntity(doc.docElem.label))
     }
   }
 
-  test("xml should parse the XML") {
-    server(Request[IO](body = strBody("<html><h1>h1</h1></html>")))
-      .flatMap(r => getBody(r.body))
-      .assertEquals("html")
+  test("round trips utf-8") {
+    forAllF(genXml) { (elem: Elem) =>
+      Request[IO]()
+        .withEntity(elem)
+        .as[Document]
+        .map(_.docElem)
+        .assertEquals(elem)
+    }
   }
 
   test("parse XML in parallel") {
@@ -144,7 +151,7 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckSuite {
     val body = Stream.chunk(bytes)
     val msg = Request[IO](Method.POST, headers = Headers(Header.Raw(ci"Content-Type", contentType)))
       .withBodyStream(body)
-    msg.as[Elem].map(_ \\ "hello" \@ "name").assertEquals(name)
+    msg.as[Document].map(_ \\ "hello" \@ "name").assertEquals(name)
   }
 
   test("parse UTF-8 charset with explicit encoding") {
