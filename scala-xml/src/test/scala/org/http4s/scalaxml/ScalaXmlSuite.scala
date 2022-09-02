@@ -258,7 +258,7 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
           "iso-2022-kr"
         )
       ),
-      "application/xml; charset=iso-2022kr",
+      "application/xml; charset=iso-2022-kr",
       "문재인",
     )
   }
