@@ -260,7 +260,9 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
       ),
       "application/xml; charset=iso-2022-kr",
       "문재인",
-    )
+    ).unlessA(
+      sys.props("java.vm.name") === "Scala.js"
+    ) // exclude test on Scala.js as it doesn't support this charset
   }
 
   test("parse conflicting charset and internal encoding") {
