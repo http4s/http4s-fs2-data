@@ -93,14 +93,14 @@ trait ElemInstances {
 
   /** Handles a message body as XML.
     *
-    * @return an XML [[Document]]
+    * @return an XML [[scala.xml.Document]]
     */
   implicit def xmlDocument[F[_]: Concurrent]: EntityDecoder[F, Document] =
     xmlDocument(true)
 
   /** Handles a message body as XML.
     *
-    * @return an XML [[Document]]
+    * @return an XML [[scala.xml.Document]]
     */
   def xmlDocument[F[_]](
       includeComments: Boolean
