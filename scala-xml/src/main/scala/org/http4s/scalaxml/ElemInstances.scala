@@ -19,7 +19,9 @@ package scalaxml
 
 import cats.effect.Concurrent
 import cats.syntax.all._
-import fs2.{Chunk, Pull, Stream}
+import fs2.Chunk
+import fs2.Pull
+import fs2.Stream
 import fs2.data.xml.XmlEvent
 import fs2.data.xml.XmlException
 import fs2.data.xml.scalaXml._
