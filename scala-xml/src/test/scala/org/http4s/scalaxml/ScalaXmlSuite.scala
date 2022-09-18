@@ -228,6 +228,32 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
     )
   }
 
+  test("parse omitted charset and 16-Bit MIME Entity (big endian)") {
+    // https://datatracker.ietf.org/doc/html/rfc7303#section-8.4 (second example)
+    encodingTest(
+      Chunk(0xfe.toByte, 0xff.toByte) ++ Chunk.array(
+        """<?xml version="1.0" encoding="utf-16"?><hello name="Günther"/>""".getBytes(
+          StandardCharsets.UTF_16BE
+        )
+      ),
+      "application/xml",
+      "Günther",
+    )
+  }
+
+  test("parse omitted charset and 16-Bit MIME Entity (little endian)") {
+    // https://datatracker.ietf.org/doc/html/rfc7303#section-8.4 (second example)
+    encodingTest(
+      Chunk(0xff.toByte, 0xfe.toByte) ++ Chunk.array(
+        """<?xml version="1.0" encoding="utf-16"?><hello name="Günther"/>""".getBytes(
+          StandardCharsets.UTF_16LE
+        )
+      ),
+      "application/xml",
+      "Günther",
+    )
+  }
+
   test("parse omitted charset, no internal encoding declaration") {
     // https://datatracker.ietf.org/doc/html/rfc7303#section-8.5
     encodingTest(
@@ -258,9 +284,11 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
           "iso-2022-kr"
         )
       ),
-      "application/xml; charset=iso-2022kr",
+      "application/xml; charset=iso-2022-kr",
       "문재인",
-    )
+    ).unlessA(
+      sys.props("java.vm.name") === "Scala.js"
+    ) // exclude test on Scala.js as it doesn't support this charset
   }
 
   test("parse conflicting charset and internal encoding") {

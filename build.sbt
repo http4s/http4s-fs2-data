@@ -7,11 +7,17 @@ val Scala213 = "2.13.8"
 ThisBuild / crossScalaVersions := Seq("2.12.16", Scala213, "3.1.2")
 ThisBuild / scalaVersion := Scala213
 
+// ensure missing timezones don't break tests on JS
+ThisBuild / jsEnv := {
+  import org.scalajs.jsenv.nodejs.NodeJSEnv
+  new NodeJSEnv(NodeJSEnv.Config().withEnv(Map("TZ" -> "UTC")))
+}
+
 lazy val root = tlCrossRootProject.aggregate(scalaXml)
 
 val http4sVersion = "0.23.12"
 val scalaXmlVersion = "2.1.0"
-val fs2DataVersion = "1.4.0"
+val fs2DataVersion = "1.5.0"
 val munitVersion = "0.7.29"
 val munitCatsEffectVersion = "1.0.7"
 
