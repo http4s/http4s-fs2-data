@@ -4,7 +4,7 @@ ThisBuild / developers := List(
 )
 
 val Scala213 = "2.13.8"
-ThisBuild / crossScalaVersions := Seq("2.12.16", Scala213, "3.1.2")
+ThisBuild / crossScalaVersions := Seq("2.12.16", Scala213, "3.1.3")
 ThisBuild / scalaVersion := Scala213
 
 // ensure missing timezones don't break tests on JS
@@ -15,7 +15,7 @@ ThisBuild / jsEnv := {
 
 lazy val root = tlCrossRootProject.aggregate(scalaXml)
 
-val http4sVersion = "0.23.12"
+val http4sVersion = "0.23.14"
 val scalaXmlVersion = "2.1.0"
 val fs2DataVersion = "1.5.0"
 val munitVersion = "0.7.29"
