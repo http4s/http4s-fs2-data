@@ -126,8 +126,8 @@ trait ElemInstances {
   // and additional whitespace is not allowed, so this strict regex should work reliably.
   private val prologWithEncoding: Regex = """<\?xml version=".+" encoding="([^"]+)".*""".r
 
-  private val `BOM-BE` = Chunk(0xfe.toByte, 0xff.toByte)
-  private val `BOM-LE` = Chunk(0xff.toByte, 0xfe.toByte)
+  private lazy val `BOM-BE` = Chunk(0xfe.toByte, 0xff.toByte)
+  private lazy val `BOM-LE` = Chunk(0xff.toByte, 0xfe.toByte)
 
   private def guessCharset(in: String): ParseResult[Charset] = in match {
     case prologWithEncoding(encoding) => Charset.fromString(encoding)
