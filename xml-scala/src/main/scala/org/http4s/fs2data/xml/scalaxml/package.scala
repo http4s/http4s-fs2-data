@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package org.http4s
+package org.http4s.fs2data.xml
 
 package object scalaxml extends ElemInstances

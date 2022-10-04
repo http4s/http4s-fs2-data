@@ -15,7 +15,7 @@
  */
 
 package org.http4s
-package scalaxml
+package fs2data.xml.scalaxml
 
 import cats.effect._
 import cats.syntax.all._
@@ -28,7 +28,7 @@ import munit.ScalaCheckEffectSuite
 import org.http4s.Status.Ok
 import org.http4s.headers.`Content-Type`
 import org.http4s.laws.discipline.arbitrary._
-import org.http4s.scalaxml.generators._
+import org.http4s.fs2data.xml.scalaxml.generators._
 import org.scalacheck.Prop._
 import org.scalacheck.effect.PropF._
 import org.typelevel.ci._
@@ -94,56 +94,55 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
     implicit val cs: Charset = Charset.`UTF-8`
     assertIO(
       writeToString(html),
-      """<?xml version='1.0' encoding='UTF-8'?>
-        |<html><body>Hello</body></html>""".stripMargin,
+      """<?xml version="1.0" encoding="UTF-8"?><html><body>Hello</body></html>""",
     )
   }
 
   test("encode to UTF-8") {
     val hello = <hello name="Günther"/>
     assertIO(
-      xmlEncoder[IO](Charset.`UTF-8`)
+      xmlElemEncoder[IO](Charset.`UTF-8`)
         .toEntity(hello)
         .body
         .through(fs2.text.utf8.decode)
         .compile
         .string,
-      """<?xml version='1.0' encoding='UTF-8'?>
-        |<hello name="Günther"/>""".stripMargin,
+      """<?xml version="1.0" encoding="UTF-8"?><hello name="Günther"/>""",
     )
   }
 
   test("encode to UTF-16") {
     val hello = <hello name="Günther"/>
     assertIO(
-      xmlEncoder[IO](Charset.`UTF-16`)
+      xmlElemEncoder[IO](Charset.`UTF-16`)
         .toEntity(hello)
         .body
         .through(decodeWithCharset(StandardCharsets.UTF_16))
         .compile
         .string,
-      """<?xml version='1.0' encoding='UTF-16'?>
-        |<hello name="Günther"/>""".stripMargin,
+      """<?xml version="1.0" encoding="UTF-16"?><hello name="Günther"/>""",
     )
   }
 
   test("encode to ISO-8859-1") {
     val hello = <hello name="Günther"/>
     assertIO(
-      xmlEncoder[IO](Charset.`ISO-8859-1`)
+      xmlElemEncoder[IO](Charset.`ISO-8859-1`)
         .toEntity(hello)
         .body
         .through(decodeWithCharset(StandardCharsets.ISO_8859_1))
         .compile
         .string,
-      """<?xml version='1.0' encoding='ISO-8859-1'?>
-        |<hello name="Günther"/>""".stripMargin,
+      """<?xml version="1.0" encoding="ISO-8859-1"?><hello name="Günther"/>""",
     )
   }
 
   property("encoder sets charset of Content-Type") {
     forAll { (cs: Charset) =>
-      assertEquals(xmlEncoder[IO](cs).headers.get[`Content-Type`].flatMap(_.charset), Some(cs))
+      assertEquals(
+        xmlElemEncoder[IO](cs).headers.get[`Content-Type`].flatMap(_.charset),
+        Some(cs),
+      )
     }
   }
 

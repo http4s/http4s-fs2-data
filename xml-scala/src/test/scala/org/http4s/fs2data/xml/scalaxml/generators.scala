@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.http4s.scalaxml
+package org.http4s.fs2data.xml.scalaxml
 
 import org.scalacheck.Gen
 
