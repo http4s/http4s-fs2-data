@@ -73,15 +73,51 @@
         
           <li class="level2"><a href="https://github.com/http4s/blaze">blaze</a></li>
         
-          <li class="level2"><a href="https://jdk-http-client.http4s.org/">http4s-jdk-http-client</a></li>
+          <li class="level2"><a href="https://github.com/http4s/http4s-armeria">http4s-armeria</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-async-http-client">http4s-async-http-client</a></li>
         
           <li class="level2"><a href="https://http4s.github.io/http4s-dom/">http4s-dom</a></li>
         
-          <li class="level2"><a href="https://github.com/http4s/rho">rho</a></li>
+          <li class="level2"><a href="https://http4s.github.io/http4s-finagle/docs/">http4s-finagle</a></li>
+        
+          <li class="level2"><a href="https://jdk-http-client.http4s.org/">http4s-jdk-http-client</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-jetty/">http4s-jetty</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-netty/">http4s-netty</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-okhttp-client/">http4s-okhttp-client</a></li>
+        
+          <li class="level2"><a href="https://http4s.github.io/http4s-servlet/">http4s-servlet</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-tomcat/">http4s-tomcat</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/rho/">rho</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-boopickle/">http4s-boopickle</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-fabric/">http4s-fabric</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-play-json/">http4s-play-json</a></li>
+        
+          <li class="level2"><a href="https://http4s.github.io/http4s-scala-xml/">http4s-scala-xml</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-scala-xml-1/">http4s-scala-xml-1</a></li>
+        
+          <li class="level2"><a href="https://http4s.github.io/http4s-dropwizard-metrics/">http4s-dropwizard-metrics</a></li>
+        
+          <li class="level2"><a href="https://http4s.github.io/http4s-prometheus-metrics/">http4s-prometheus-metrics</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-scalatags/">http4s-scalatags</a></li>
+        
+          <li class="level2"><a href="https://http4s.github.io/http4s-session/">http4s-session</a></li>
+        
+          <li class="level2"><a href="https://github.com/http4s/http4s-twirl/">http4s-twirl</a></li>
         
           <li class="level2"><a href="https://http4s.github.io/sbt-http4s-org/">sbt-http4s-org</a></li>
         
-          <li class="level2"><a href="https://github.com/typelevel/feral">feral</a></li>
+          <li class="level2"><a href="https://github.com/typelevel/feral/">feral</a></li>
         
       </ul>
 
@@ -102,7 +138,7 @@
       <main class="content">
 
         <h1 id="http4s-scala-xml" class="title">http4s-scala-xml</h1>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;org.http4s&quot;</span><span> %% </span><span class="string-literal">&quot;http4s-scala-xml&quot;</span><span> % </span><span class="string-literal">&quot;0.23-1cbc2d7-SNAPSHOT&quot;</span></code></pre>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;org.http4s&quot;</span><span> %% </span><span class="string-literal">&quot;http4s-scala-xml&quot;</span><span> % </span><span class="string-literal">&quot;0.0-c1d70c2-SNAPSHOT&quot;</span></code></pre>
         
         <h2 id="example" class="section">Example<a class="anchor-link right" href="#example"><i class="icofont-laika">&#xef71;</i></a></h2>
         <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Async</span><span>
@@ -129,7 +165,7 @@
     * &lt;/person&gt;
     */</span><span>
   </span><span class="keyword">private</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">Person</span><span> {
-    </span><span class="keyword">def</span><span> </span><span class="declaration-name">fromXml</span><span>(</span><span class="identifier">elem</span><span>: </span><span class="type-name">Elem</span><span>): </span><span class="type-name">Person</span><span> = {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">fromXml</span><span>(</span><span class="identifier">elem</span><span>: </span><span class="type-name">Document</span><span>): </span><span class="type-name">Person</span><span> = {
       </span><span class="keyword">val</span><span> </span><span class="identifier">name</span><span> = (</span><span class="identifier">elem</span><span> \\ </span><span class="string-literal">&quot;name&quot;</span><span>).</span><span class="identifier">text</span><span>
       </span><span class="keyword">val</span><span> </span><span class="identifier">age</span><span> = (</span><span class="identifier">elem</span><span> \\ </span><span class="string-literal">&quot;age&quot;</span><span>).</span><span class="identifier">text</span><span>
       </span><span class="type-name">Person</span><span>(</span><span class="identifier">name</span><span>, </span><span class="identifier">age</span><span>.</span><span class="identifier">toInt</span><span>)
@@ -137,7 +173,7 @@
   }
 
   </span><span class="keyword">private</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">personXmlDecoder</span><span>: </span><span class="type-name">EntityDecoder</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Person</span><span>] =
-    </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">scalaxml</span><span>.</span><span class="identifier">xml</span><span>[</span><span class="type-name">F</span><span>].</span><span class="identifier">map</span><span>(</span><span class="type-name">Person</span><span>.</span><span class="identifier">fromXml</span><span>)
+    </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">scalaxml</span><span>.</span><span class="identifier">xmlDocument</span><span>[</span><span class="type-name">F</span><span>].</span><span class="identifier">map</span><span>(</span><span class="type-name">Person</span><span>.</span><span class="identifier">fromXml</span><span>)
 
   </span><span class="keyword">implicit</span><span> </span><span class="keyword">private</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">jsonXmlDecoder</span><span>: </span><span class="type-name">EntityDecoder</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Person</span><span>] =
     </span><span class="identifier">jsonOf</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Person</span><span>].</span><span class="identifier">orElse</span><span>(</span><span class="identifier">personXmlDecoder</span><span>)
