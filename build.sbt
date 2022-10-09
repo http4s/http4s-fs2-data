@@ -15,11 +15,11 @@ ThisBuild / jsEnv := {
 
 lazy val root = tlCrossRootProject.aggregate(scalaXml)
 
-val http4sVersion = "0.23.14"
+val http4sVersion = "0.23.16"
 val scalaXmlVersion = "2.1.0"
 val fs2DataVersion = "1.5.0"
-val munitVersion = "0.7.29"
-val munitCatsEffectVersion = "1.0.7"
+val munitVersion = "1.0.0-M6"
+val munitCatsEffectVersion = "2.0.0-M3"
 
 lazy val scalaXml = crossProject(JVMPlatform, JSPlatform)
   .crossType(CrossType.Pure)
@@ -33,7 +33,7 @@ lazy val scalaXml = crossProject(JVMPlatform, JSPlatform)
       "org.scala-lang.modules" %%% "scala-xml" % scalaXmlVersion,
       "org.gnieh" %%% "fs2-data-xml-scala" % fs2DataVersion,
       "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
-      "org.typelevel" %%% "munit-cats-effect-3" % munitCatsEffectVersion % Test,
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
       "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
     ),
   )
