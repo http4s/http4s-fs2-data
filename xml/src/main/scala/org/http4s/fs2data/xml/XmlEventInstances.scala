@@ -24,11 +24,12 @@ import cats.syntax.all._
 import fs2.Chunk
 import fs2.Pull
 import fs2.Stream
-import fs2.data.xml.render
 import fs2.data.xml.XmlEvent
+import fs2.data.xml.render
 import fs2.text.decodeWithCharset
 import org.http4s.Charset.`UTF-8`
-import org.http4s.headers.{`Content-Type`, `Transfer-Encoding`}
+import org.http4s.headers.`Content-Type`
+import org.http4s.headers.`Transfer-Encoding`
 
 import scala.util.matching.Regex
 

@@ -22,9 +22,9 @@ package scalaxml
 import cats.effect.Concurrent
 import cats.syntax.all._
 import fs2.Stream
+import fs2.data.xml.XmlException
 import fs2.data.xml.dom
 import fs2.data.xml.scalaXml._
-import fs2.data.xml.XmlException
 import org.http4s.Charset.`UTF-8`
 
 import scala.xml.Document

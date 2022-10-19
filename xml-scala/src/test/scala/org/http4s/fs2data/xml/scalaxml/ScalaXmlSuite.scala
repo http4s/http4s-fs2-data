@@ -26,9 +26,9 @@ import fs2.text.utf8
 import munit.CatsEffectSuite
 import munit.ScalaCheckEffectSuite
 import org.http4s.Status.Ok
+import org.http4s.fs2data.xml.scalaxml.generators._
 import org.http4s.headers.`Content-Type`
 import org.http4s.laws.discipline.arbitrary._
-import org.http4s.fs2data.xml.scalaxml.generators._
 import org.scalacheck.Prop._
 import org.scalacheck.effect.PropF._
 import org.typelevel.ci._

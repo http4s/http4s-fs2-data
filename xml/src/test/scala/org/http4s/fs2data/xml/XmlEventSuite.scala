@@ -20,8 +20,11 @@ import cats.effect.IO
 import cats.syntax.all._
 import fs2.Stream
 import fs2.data.xml._
-import munit.{CatsEffectSuite, ScalaCheckEffectSuite}
-import org.http4s.{Charset, EntityDecoder, Request}
+import munit.CatsEffectSuite
+import munit.ScalaCheckEffectSuite
+import org.http4s.Charset
+import org.http4s.EntityDecoder
+import org.http4s.Request
 
 class XmlEventSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
 
