@@ -3,9 +3,11 @@ ThisBuild / developers := List(
   tlGitHubDev("rossabaker", "Ross A. Baker")
 )
 
-val Scala213 = "2.13.9"
+val Scala213 = "2.13.10"
 ThisBuild / crossScalaVersions := Seq("2.12.17", Scala213, "3.2.0")
 ThisBuild / scalaVersion := Scala213
+
+ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 
 // ensure missing timezones don't break tests on JS
 ThisBuild / jsEnv := {
@@ -17,6 +19,7 @@ lazy val root = tlCrossRootProject.aggregate(xml, xmlScala)
 
 val http4sVersion = "0.23.16"
 val scalaXmlVersion = "2.1.0"
+val fs2Version = "3.3.0-99-0a0d363-SNAPSHOT"
 val fs2DataVersion = "1.5.1"
 val munitVersion = "1.0.0-M6"
 val munitCatsEffectVersion = "2.0.0-M3"
@@ -29,7 +32,7 @@ lazy val xml = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     description := "Provides xml codecs for http4s via fs2-data",
     startYear := Some(2022),
     libraryDependencies ++= Seq(
-      "co.fs2" %%% "fs2-core" % "3.3.0-47-85f745e-20221004T141927Z-SNAPSHOT",
+      "co.fs2" %%% "fs2-core" % fs2Version,
       "org.http4s" %%% "http4s-core" % http4sVersion,
       "org.gnieh" %%% "fs2-data-xml" % fs2DataVersion,
       "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
