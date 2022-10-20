@@ -39,6 +39,7 @@ lazy val xml = crossProject(JVMPlatform, JSPlatform, NativePlatform)
       "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
       "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
     ),
+    unusedCompileDependenciesTest := {}, // Doesn't work for Scala Native
   )
 
 lazy val xmlScala = crossProject(JVMPlatform, JSPlatform, NativePlatform)
@@ -58,6 +59,7 @@ lazy val xmlScala = crossProject(JVMPlatform, JSPlatform, NativePlatform)
       // "org.typelevel" %%% "scalacheck-xml" % "0.1.0" % Test,
       "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
     ),
+    unusedCompileDependenciesTest := {}, // Doesn't work for Scala Native
   )
 
 lazy val docs = project
