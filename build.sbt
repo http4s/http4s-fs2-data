@@ -7,6 +7,7 @@ val Scala213 = "2.13.10"
 ThisBuild / crossScalaVersions := Seq("2.12.17", Scala213, "3.2.0")
 ThisBuild / scalaVersion := Scala213
 
+// Remove once we don't need fs2 snapshot anymore
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 
 // ensure missing timezones don't break tests on JS
@@ -20,7 +21,7 @@ lazy val root = tlCrossRootProject.aggregate(xml, xmlScala)
 val http4sVersion = "0.23.16"
 val scalaXmlVersion = "2.1.0"
 val fs2Version = "3.3.0-99-0a0d363-SNAPSHOT"
-val fs2DataVersion = "1.5.1"
+val fs2DataVersion = "1.6.0"
 val munitVersion = "1.0.0-M6"
 val munitCatsEffectVersion = "2.0.0-M3"
 
@@ -38,8 +39,7 @@ lazy val xml = crossProject(JVMPlatform, JSPlatform, NativePlatform)
       "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
       "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
       "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
-    ),
-    unusedCompileDependenciesTest := {}, // Doesn't work for Scala Native
+    )
   )
 
 lazy val xmlScala = crossProject(JVMPlatform, JSPlatform, NativePlatform)
@@ -58,8 +58,7 @@ lazy val xmlScala = crossProject(JVMPlatform, JSPlatform, NativePlatform)
       "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
       // "org.typelevel" %%% "scalacheck-xml" % "0.1.0" % Test,
       "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
-    ),
-    unusedCompileDependenciesTest := {}, // Doesn't work for Scala Native
+    )
   )
 
 lazy val docs = project
