@@ -4,7 +4,7 @@ ThisBuild / developers := List(
 )
 
 val Scala213 = "2.13.10"
-ThisBuild / crossScalaVersions := Seq("2.12.17", Scala213, "3.2.0")
+ThisBuild / crossScalaVersions := Seq("2.12.17", Scala213, "3.2.1")
 ThisBuild / scalaVersion := Scala213
 
 // Remove once we don't need fs2 snapshot anymore
