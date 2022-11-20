@@ -7,9 +7,6 @@ val Scala213 = "2.13.10"
 ThisBuild / crossScalaVersions := Seq("2.12.17", Scala213, "3.2.1")
 ThisBuild / scalaVersion := Scala213
 
-// Remove once we don't need fs2 snapshot anymore
-ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("snapshots")
-
 // ensure missing timezones don't break tests on JS
 ThisBuild / jsEnv := {
   import org.scalajs.jsenv.nodejs.NodeJSEnv
@@ -20,7 +17,7 @@ lazy val root = tlCrossRootProject.aggregate(xml, xmlScala)
 
 val http4sVersion = "0.23.16"
 val scalaXmlVersion = "2.1.0"
-val fs2Version = "3.3.0-99-0a0d363-SNAPSHOT"
+val fs2Version = "3.4.0"
 val fs2DataVersion = "1.6.0"
 val munitVersion = "1.0.0-M7"
 val munitCatsEffectVersion = "2.0.0-M3"
