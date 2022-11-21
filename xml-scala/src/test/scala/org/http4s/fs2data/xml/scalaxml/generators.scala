@@ -433,7 +433,9 @@ object generators {
     for {
       n <- Gen.poisson(5)
       s <- Gen.stringOfN(n, Gen.oneOf(char))
-    } yield Text(s)
+      // Text may not contain these two in literal form, §2.4 of XML syntax
+      r = s.replace("&", "&amp;").replace("<", "&lt;")
+    } yield Text(r)
 
   val genComment: Gen[Comment] =
     for {
