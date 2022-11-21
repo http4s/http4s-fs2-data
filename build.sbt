@@ -1,6 +1,7 @@
 ThisBuild / tlBaseVersion := "0.0"
 ThisBuild / developers := List(
-  tlGitHubDev("rossabaker", "Ross A. Baker")
+  tlGitHubDev("rossabaker", "Ross A. Baker"),
+  tlGitHubDev("ybasket", "Yannick Heiber"),
 )
 
 val Scala213 = "2.13.10"
