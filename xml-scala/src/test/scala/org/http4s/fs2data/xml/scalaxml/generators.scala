@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 http4s.org
+ * Copyright 2022 http4s.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.http4s.scalaxml
+package org.http4s.fs2data.xml.scalaxml
 
 import org.scalacheck.Gen
 

@@ -1,7 +1,20 @@
-# http4s-scala-xml
+# http4s-fs2-data-xml
+
+Provides basic support for parsing and encoding `fs2.data.xml.XmlEvent` streams that can be handled in a streaming fashion
+using the pipes and builders `fs2-data` provides.
 
 ```scala
-libraryDependencies += "org.http4s" %% "http4s-scala-xml" % "@VERSION@"
+libraryDependencies += "org.http4s" %% "http4s-fs2-data-xml" % "@VERSION@"
+```
+
+# http4s-fs2-data-xml-scala
+
+Provides additional integration with `scala-xml` to work directly with its `Document` ans `Elem` types. To some extent, 
+this module is a drop-in replacement for the `http4s-scala-xml` module, but it provides additional streaming capabilities
+`scala-xml` doesn't.
+
+```scala
+libraryDependencies += "org.http4s" %% "http4s-fs2-data-xml-scala" % "@VERSION@"
 ```
 
 ## Example
@@ -38,7 +51,7 @@ class JsonXmlHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
   }
 
   private def personXmlDecoder: EntityDecoder[F, Person] =
-    org.http4s.scalaxml.xmlDocument[F].map(Person.fromXml)
+    org.http4s.fs2data.xml.scalaxml.xmlDocumentDecoder.map(Person.fromXml)
 
   implicit private def jsonXmlDecoder: EntityDecoder[F, Person] =
     jsonOf[F, Person].orElse(personXmlDecoder)

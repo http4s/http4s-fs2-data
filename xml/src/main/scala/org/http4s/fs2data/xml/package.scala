@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 http4s.org
+ * Copyright 2022 http4s.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package org.http4s
+package org.http4s.fs2data
 
-package object scalaxml extends ElemInstances
+package object xml extends XmlEventInstances
