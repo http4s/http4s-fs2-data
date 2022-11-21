@@ -24,7 +24,9 @@ import cats.syntax.all._
 import fs2.Chunk
 import fs2.Pull
 import fs2.Stream
-import fs2.data.xml.{XmlEvent, XmlException, render}
+import fs2.data.xml.XmlEvent
+import fs2.data.xml.XmlException
+import fs2.data.xml.render
 import fs2.text.decodeWithCharset
 import org.http4s.Charset.`UTF-8`
 import org.http4s.headers.`Content-Type`
