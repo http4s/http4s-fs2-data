@@ -79,7 +79,7 @@ trait ElemInstances extends XmlEventInstances {
       events
         .through(fs2.data.xml.dom.documents)
         .adaptError { case ex: XmlException =>
-          MalformedMessageBodyFailure("Invalid XML", Some(ex))
+          MalformedMessageBodyFailure(s"Invalid XML (${ex.error.name}): ${ex.msg}", Some(ex))
         }
     }
 }
