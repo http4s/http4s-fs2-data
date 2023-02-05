@@ -41,8 +41,6 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
   def getBody(body: EntityBody[IO]): IO[String] =
     body.through(utf8.decode).foldMonoid.compile.lastOrError
 
-  def strBody(body: String): EntityBody[IO] = Stream(body).through(utf8.encode)
-
   def writeToString[A](a: A)(implicit W: EntityEncoder[IO, A]): IO[String] =
     Stream
       .emit(W.toEntity(a))
@@ -70,12 +68,12 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
   }
 
   test("parse XML in parallel") {
-    val req = Request(body =
-      strBody("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><html><h1>h1</h1></html>""")
+    val req = Request().withEntity(
+      """<?xml version="1.0" encoding="UTF-8" standalone="yes"?><html><h1>h1</h1></html>"""
     )
     // https://github.com/http4s/http4s/issues/1209
     (0 to 5).toList
-      .parTraverse(_ => server(req).flatMap(r => getBody(r.body)))
+      .parTraverse(_ => server(req).flatMap(_.as[String]))
       .map { bodies =>
         bodies.foreach { body =>
           assertEquals(body, "html")
@@ -84,8 +82,8 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
   }
 
   test("return 400 on parse error") {
-    val body = strBody("This is not XML.")
-    val tresp = server(Request[IO](body = body))
+    val body = "This is not XML."
+    val tresp = server(Request[IO]().withEntity(body))
     tresp.map(_.status).assertEquals(Status.BadRequest)
   }
 
