@@ -79,12 +79,13 @@ lazy val csv = crossProject(JVMPlatform, JSPlatform, NativePlatform)
 
 lazy val docs = project
   .in(file("site"))
-  .dependsOn(xml.jvm, xmlScala.jvm)
+  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm)
   .settings(
     libraryDependencies ++= Seq(
+      "io.circe" %%% "circe-generic" % "0.14.1",
       "org.http4s" %%% "http4s-dsl" % http4sVersion,
       "org.http4s" %%% "http4s-circe" % http4sVersion,
-      "io.circe" %%% "circe-generic" % "0.14.1",
+      "org.gnieh" %%% "fs2-data-csv-generic" % fs2DataVersion,
     )
   )
   .enablePlugins(Http4sOrgSitePlugin)

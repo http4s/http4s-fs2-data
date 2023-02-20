@@ -1,4 +1,8 @@
-# http4s-fs2-data-xml
+# http4s-fs2-data
+
+`http4s-fs2-data` provides a set of integration libraries that integrate `http4s` with the streaming parsers offered by [fs2-data](https://github.com/gnieh/fs2-data).
+
+## http4s-fs2-data-xml
 
 Provides basic support for parsing and encoding `fs2.data.xml.XmlEvent` streams that can be handled in a streaming fashion
 using the pipes and builders `fs2-data` provides.
@@ -7,7 +11,7 @@ using the pipes and builders `fs2-data` provides.
 libraryDependencies += "org.http4s" %% "http4s-fs2-data-xml" % "@VERSION@"
 ```
 
-# http4s-fs2-data-xml-scala
+## http4s-fs2-data-xml-scala
 
 Provides additional integration with `scala-xml` to work directly with its `Document` ans `Elem` types. To some extent, 
 this module is a drop-in replacement for the `http4s-scala-xml` module, but it provides additional streaming capabilities
@@ -17,7 +21,7 @@ this module is a drop-in replacement for the `http4s-scala-xml` module, but it p
 libraryDependencies += "org.http4s" %% "http4s-fs2-data-xml-scala" % "@VERSION@"
 ```
 
-## Example
+### Example
 
 ```scala mdoc
 import cats.effect.Async
@@ -69,3 +73,42 @@ class JsonXmlHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
   }
 }
 ```
+
+## http4s-fs2-data-csv
+
+Provides basic support for parsing and encoding CSV streams that can be handled in a streaming fashion
+using the pipes `fs2-data` provides. Note that this integration does not expose any implicits, but due to the varity of 
+CSV styles (comma/semicolon/tab for example) it exposes methods that lift the collection of CSV pipes `fs2-data` offers
+to HTTP level so that all parsing options can conveniently be specified. Implicit encoder and decoder can easily be built
+on top of this if the options are fixed with a certain context.
+
+### Example
+
+This example parses a CSV input with headers and outputs the parsed data as a JSON array.
+
+```scala mdoc
+import fs2.Stream
+import fs2.data.csv._
+import fs2.data.csv.generic.semiauto
+import org.http4s.circe.CirceEntityEncoder._
+
+class CsvStatsHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
+  private case class Person(name: String, age: Int)
+  private object Person {
+    implicit val decoder: CsvRowDecoder[Person, String] = semiauto.deriveCsvRowDecoder
+  }
+  
+  private implicit val personDecoder: EntityDecoder[F, Stream[F, Person]] =
+    org.http4s.fs2data.csv.csvDecoderForPipe(decodeUsingHeaders[Person]())
+
+  // or more generic if you have a couple of similar inputs
+  // private implicit def genericDecoder[T](implicit T: CsvRowDecoder[T, String]): EntityDecoder[F, Stream[F, T]] =
+  //   org.http4s.fs2data.csv.csvDecoderForPipe(decodeUsingHeaders[T]())
+
+  val service: HttpRoutes[F] = HttpRoutes.of { 
+    case req @ POST -> Root / "csv" / "toJson" =>
+      Ok(Stream.force(req.as[Stream[F, Person]]).compile.toList)
+  }
+}
+```
+
