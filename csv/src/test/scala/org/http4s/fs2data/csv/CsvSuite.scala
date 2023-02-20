@@ -23,13 +23,16 @@ import fs2.data.csv._
 import fs2.data.csv.generic.semiauto
 import munit.CatsEffectSuite
 import munit.ScalaCheckEffectSuite
-import org.http4s.{Charset, EntityDecoder, EntityEncoder, Request}
+import org.http4s.Charset
+import org.http4s.EntityDecoder
+import org.http4s.EntityEncoder
+import org.http4s.Request
 
 class CsvSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
 
-  case class Data(first: String, second: Long, third: Boolean)
+  private case class Data(first: String, second: Long, third: Boolean)
 
-  object Data {
+  private object Data {
     implicit val encoder: CsvRowEncoder[Data, String] = semiauto.deriveCsvRowEncoder
     implicit val decoder: CsvRowDecoder[Data, String] = semiauto.deriveCsvRowDecoder
   }
