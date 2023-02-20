@@ -59,6 +59,24 @@ lazy val xmlScala = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     ),
   )
 
+lazy val csv = crossProject(JVMPlatform, JSPlatform, NativePlatform)
+  .crossType(CrossType.Pure)
+  .in(file("csv"))
+  .settings(
+    name := "http4s-fs2-data-csv",
+    description := "Provides csv codecs for http4s via fs2-data",
+    startYear := Some(2023),
+    libraryDependencies ++= Seq(
+      "co.fs2" %%% "fs2-core" % fs2Version,
+      "org.http4s" %%% "http4s-core" % http4sVersion,
+      "org.gnieh" %%% "fs2-data-csv" % fs2DataVersion,
+      "org.gnieh" %%% "fs2-data-csv-generic" % fs2DataVersion % Test,
+      "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
+      "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
+    ),
+  )
+
 lazy val docs = project
   .in(file("site"))
   .dependsOn(xml.jvm, xmlScala.jvm)
