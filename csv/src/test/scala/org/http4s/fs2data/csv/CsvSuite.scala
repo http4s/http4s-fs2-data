@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 http4s.org
+ * Copyright 2023 http4s.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.http4s.fs2data.csv
 
 import cats.data.NonEmptyList.{of => nel}
 import cats.effect.IO
-import cats.syntax.all._
 import fs2.Stream
 import fs2.data.csv._
 import fs2.data.csv.generic.semiauto

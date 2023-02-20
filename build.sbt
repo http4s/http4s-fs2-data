@@ -14,7 +14,7 @@ ThisBuild / jsEnv := {
   new NodeJSEnv(NodeJSEnv.Config().withEnv(Map("TZ" -> "UTC")))
 }
 
-lazy val root = tlCrossRootProject.aggregate(xml, xmlScala)
+lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv)
 
 val http4sVersion = "0.23.18"
 val scalaXmlVersion = "2.1.0"
@@ -66,6 +66,7 @@ lazy val csv = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     name := "http4s-fs2-data-csv",
     description := "Provides csv codecs for http4s via fs2-data",
     startYear := Some(2023),
+    tlVersionIntroduced := Map("2.12" -> "0.2", "2.13" -> "0.2", "3" -> "0.2"),
     libraryDependencies ++= Seq(
       "co.fs2" %%% "fs2-core" % fs2Version,
       "org.http4s" %%% "http4s-core" % http4sVersion,
