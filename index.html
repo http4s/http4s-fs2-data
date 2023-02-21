@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
-    <title>http4s-fs2-data-xml</title>
+    <title>http4s-fs2-data</title>
     
       <meta name="author" content="Ross A. Baker"/>
     
@@ -65,7 +65,7 @@
       </div>
 
       <ul class="nav-list">
-        <li class="level1 active"><a href="#">http4s-fs2-data-xml</a></li>
+        <li class="level1 active"><a href="#">http4s-fs2-data</a></li>
       </ul>
 
       <ul class="nav-list">
@@ -130,11 +130,14 @@
     <div id="container">
 
       <nav id="page-nav">
-        <p class="header"><a href="#">http4s-fs2-data-xml</a></p>
+        <p class="header"><a href="#">http4s-fs2-data</a></p>
 
         <ul class="nav-list">
+          <li class="level1"><a href="#http4s-fs2-data-xml">http4s-fs2-data-xml</a></li>
           <li class="level1"><a href="#http4s-fs2-data-xml-scala">http4s-fs2-data-xml-scala</a></li>
-          <li class="level2"><a href="#example">Example</a></li>
+          <li class="level2"><a href="#example-1">Example</a></li>
+          <li class="level1"><a href="#http4s-fs2-data-csv">http4s-fs2-data-csv</a></li>
+          <li class="level2"><a href="#example-2">Example</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -142,18 +145,21 @@
 
       <main class="content">
 
-        <h1 id="http4s-fs2-data-xml" class="title">http4s-fs2-data-xml</h1>
+        <h1 id="http4s-fs2-data" class="title">http4s-fs2-data</h1>
+        <p><code>http4s-fs2-data</code> provides a set of integration libraries that integrate <code>http4s</code> with the streaming parsers offered by <a href="https://github.com/gnieh/fs2-data">fs2-data</a>.</p>
+        
+        <h2 id="http4s-fs2-data-xml" class="section">http4s-fs2-data-xml<a class="anchor-link right" href="#http4s-fs2-data-xml"><i class="icofont-laika">&#xef71;</i></a></h2>
         <p>Provides basic support for parsing and encoding <code>fs2.data.xml.XmlEvent</code> streams that can be handled in a streaming fashion
         using the pipes and builders <code>fs2-data</code> provides.</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;org.http4s&quot;</span><span> %% </span><span class="string-literal">&quot;http4s-fs2-data-xml&quot;</span><span> % </span><span class="string-literal">&quot;0.1.0&quot;</span></code></pre>
         
-        <h1 id="http4s-fs2-data-xml-scala" class="section">http4s-fs2-data-xml-scala<a class="anchor-link right" href="#http4s-fs2-data-xml-scala"><i class="icofont-laika">&#xef71;</i></a></h1>
+        <h2 id="http4s-fs2-data-xml-scala" class="section">http4s-fs2-data-xml-scala<a class="anchor-link right" href="#http4s-fs2-data-xml-scala"><i class="icofont-laika">&#xef71;</i></a></h2>
         <p>Provides additional integration with <code>scala-xml</code> to work directly with its <code>Document</code> ans <code>Elem</code> types. To some extent, 
         this module is a drop-in replacement for the <code>http4s-scala-xml</code> module, but it provides additional streaming capabilities
         <code>scala-xml</code> doesn&#39;t.</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;org.http4s&quot;</span><span> %% </span><span class="string-literal">&quot;http4s-fs2-data-xml-scala&quot;</span><span> % </span><span class="string-literal">&quot;0.1.0&quot;</span></code></pre>
         
-        <h2 id="example" class="section">Example<a class="anchor-link right" href="#example"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <h3 id="example-1" class="section">Example<a class="anchor-link right" href="#example-1"><i class="icofont-laika">&#xef71;</i></a></h3>
         <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Async</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">flatMap</span><span>.</span><span class="identifier">_</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">circe</span><span>.</span><span class="identifier">generic</span><span>.</span><span class="identifier">auto</span><span>.</span><span class="identifier">_</span><span>
@@ -201,6 +207,39 @@
       </span><span class="identifier">req</span><span>.</span><span class="identifier">as</span><span>[</span><span class="type-name">Person</span><span>].</span><span class="identifier">flatMap</span><span> { </span><span class="identifier">person</span><span> =&gt;
         </span><span class="type-name">Ok</span><span>(</span><span class="string-literal">s&quot;Successfully decoded person: </span><span class="substitution">${person.name}</span><span class="string-literal">&quot;</span><span>)
       }
+  }
+}</span></code></pre>
+        
+        <h2 id="http4s-fs2-data-csv" class="section">http4s-fs2-data-csv<a class="anchor-link right" href="#http4s-fs2-data-csv"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>Provides basic support for parsing and encoding CSV streams that can be handled in a streaming fashion
+        using the pipes <code>fs2-data</code> provides. Note that this integration does not expose any implicits, but due to the varity of 
+        CSV styles (comma/semicolon/tab for example) it exposes methods that lift the collection of CSV pipes <code>fs2-data</code> offers
+        to HTTP level so that all parsing options can conveniently be specified. Implicit encoder and decoder can easily be built
+        on top of this if the options are fixed with a certain context.</p>
+        
+        <h3 id="example-2" class="section">Example<a class="anchor-link right" href="#example-2"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>This example parses a CSV input with headers and outputs the parsed data as a JSON array.</p>
+        <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="type-name">Stream</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="identifier">data</span><span>.</span><span class="identifier">csv</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="identifier">data</span><span>.</span><span class="identifier">csv</span><span>.</span><span class="identifier">generic</span><span>.</span><span class="identifier">semiauto</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">circe</span><span>.</span><span class="type-name">CirceEntityEncoder</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">class</span><span> </span><span class="type-name">CsvStatsHttpEndpoint</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="keyword">implicit</span><span> </span><span class="type-name">F</span><span>: </span><span class="type-name">Async</span><span>[</span><span class="type-name">F</span><span>]) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+  </span><span class="keyword">private</span><span> </span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Person</span><span>(</span><span class="identifier">name</span><span>: </span><span class="type-name">String</span><span>, </span><span class="identifier">age</span><span>: </span><span class="type-name">Int</span><span>)
+  </span><span class="keyword">private</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">Person</span><span> {
+    </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">decoder</span><span>: </span><span class="type-name">CsvRowDecoder</span><span>[</span><span class="type-name">Person</span><span>, </span><span class="type-name">String</span><span>] = </span><span class="identifier">semiauto</span><span>.</span><span class="identifier">deriveCsvRowDecoder</span><span>
+  }
+  
+  </span><span class="keyword">private</span><span> </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">personDecoder</span><span>: </span><span class="type-name">EntityDecoder</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Person</span><span>]] =
+    </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">fs2data</span><span>.</span><span class="identifier">csv</span><span>.</span><span class="identifier">csvDecoderForPipe</span><span>(</span><span class="identifier">decodeUsingHeaders</span><span>[</span><span class="type-name">Person</span><span>]())
+
+  </span><span class="comment">// or more generic if you have a couple of similar inputs
+</span><span>  </span><span class="comment">// private implicit def genericDecoder[T](implicit T: CsvRowDecoder[T, String]): EntityDecoder[F, Stream[F, T]] =
+</span><span>  </span><span class="comment">//   org.http4s.fs2data.csv.csvDecoderForPipe(decodeUsingHeaders[T]())
+</span><span>
+  </span><span class="keyword">val</span><span> </span><span class="identifier">service</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="type-name">HttpRoutes</span><span>.</span><span class="identifier">of</span><span> { 
+    </span><span class="keyword">case</span><span> </span><span class="identifier">req</span><span> @ </span><span class="type-name">POST</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;csv&quot;</span><span> / </span><span class="string-literal">&quot;toJson&quot;</span><span> =&gt;
+      </span><span class="type-name">Ok</span><span>(</span><span class="type-name">Stream</span><span>.</span><span class="identifier">force</span><span>(</span><span class="identifier">req</span><span>.</span><span class="identifier">as</span><span>[</span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Person</span><span>]]).</span><span class="identifier">compile</span><span>.</span><span class="identifier">toList</span><span>)
   }
 }</span></code></pre>
 
