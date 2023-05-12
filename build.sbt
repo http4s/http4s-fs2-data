@@ -19,7 +19,7 @@ lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv)
 val http4sVersion = "0.23.18"
 val scalaXmlVersion = "2.1.0"
 val fs2Version = "3.7.0"
-val fs2DataVersion = "1.7.0"
+val fs2DataVersion = "1.7.1"
 val munitVersion = "1.0.0-M7"
 val munitCatsEffectVersion = "2.0.0-M3"
 
