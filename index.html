@@ -138,6 +138,8 @@
           <li class="level2"><a href="#example-1">Example</a></li>
           <li class="level1"><a href="#http4s-fs2-data-csv">http4s-fs2-data-csv</a></li>
           <li class="level2"><a href="#example-2">Example</a></li>
+          <li class="level1"><a href="#http4s-fs2-data-cbor">http4s-fs2-data-cbor</a></li>
+          <li class="level2"><a href="#example-3">Example</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -242,6 +244,37 @@
       </span><span class="type-name">Ok</span><span>(</span><span class="type-name">Stream</span><span>.</span><span class="identifier">force</span><span>(</span><span class="identifier">req</span><span>.</span><span class="identifier">as</span><span>[</span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Person</span><span>]]).</span><span class="identifier">compile</span><span>.</span><span class="identifier">toList</span><span>)
   }
 }</span></code></pre>
+        
+        <h2 id="http4s-fs2-data-cbor" class="section">http4s-fs2-data-cbor<a class="anchor-link right" href="#http4s-fs2-data-cbor"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>Provides basic support for parsing and encoding CBOR streams that can be handled in a streaming fashion, either
+        treating the in/output as a stream itself or as a single value.</p>
+        
+        <h3 id="example-3" class="section">Example<a class="anchor-link right" href="#example-3"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>This example consumes a CSV input, converts it to CBOR as a simple stream of arrays provides and returns it.</p>
+        <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="type-name">Stream</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="identifier">data</span><span>.</span><span class="identifier">cbor</span><span>.</span><span class="identifier">high</span><span>.</span><span class="type-name">CborValue</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="identifier">data</span><span>.</span><span class="identifier">csv</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">fs2data</span><span>.</span><span class="identifier">cbor</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">fs2data</span><span>.</span><span class="identifier">csv</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">class</span><span> </span><span class="type-name">Csv2CborHttpEndpoint</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="keyword">implicit</span><span> </span><span class="type-name">F</span><span>: </span><span class="type-name">Async</span><span>[</span><span class="type-name">F</span><span>]) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+
+  </span><span class="keyword">private</span><span> </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">decoder</span><span>: </span><span class="type-name">EntityDecoder</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Row</span><span>]] = </span><span class="identifier">rowDecoder</span><span>()
+  
+  </span><span class="keyword">val</span><span> </span><span class="identifier">service</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="type-name">HttpRoutes</span><span>.</span><span class="identifier">of</span><span> { 
+    </span><span class="keyword">case</span><span> </span><span class="identifier">req</span><span> @ </span><span class="type-name">POST</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;csv&quot;</span><span> / </span><span class="string-literal">&quot;toCbor&quot;</span><span> =&gt;
+      </span><span class="type-name">Ok</span><span>(</span><span class="type-name">Stream</span><span>.</span><span class="identifier">force</span><span>(</span><span class="identifier">req</span><span>.</span><span class="identifier">as</span><span>[</span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Row</span><span>]]).</span><span class="identifier">map</span><span>(</span><span class="identifier">toCbor</span><span>))
+  }
+  
+  </span><span class="keyword">private</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">toCbor</span><span>(</span><span class="identifier">row</span><span>: </span><span class="type-name">Row</span><span>): </span><span class="type-name">CborValue</span><span> =
+    </span><span class="type-name">CborValue</span><span>.</span><span class="type-name">Array</span><span>(</span><span class="identifier">row</span><span>.</span><span class="identifier">values</span><span>.</span><span class="identifier">toList</span><span>.</span><span class="identifier">map</span><span>(</span><span class="type-name">CborValue</span><span>.</span><span class="type-name">TextString</span><span>(</span><span class="identifier">_</span><span>)), </span><span class="boolean-literal">false</span><span>)
+}</span></code></pre>
+        <p>You can try yourself with this snippet:</p>
+        <pre class="keep-together pdf epub"><code class="shell">curl -s -X &quot;POST&quot; &quot;http://localhost:8080/csv/toCbor&quot; \
+     -H &#39;Content-Type: text/csv; charset=utf-8&#39; \
+     -d $&#39;1,Ene,Mene
+2,Muh,!&#39; | od -A n -t x1</code></pre>
+        <p>Then copy the output to <a href="https://cbor.me"><a href="https://cbor.me">https://cbor.me</a></a> or a similar CBOR viewer. Make sure to view as <code>cborseq</code> otherwise the output will be truncated.</p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
