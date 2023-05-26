@@ -17,14 +17,16 @@
 package org.http4s.fs2data.cbor
 
 import cats.effect.IO
-import fs2.{Fallible, Stream}
+import fs2.Fallible
+import fs2.Stream
 import fs2.data.cbor.high
 import fs2.data.cbor.high._
 import munit.CatsEffectSuite
 import munit.ScalaCheckEffectSuite
 import org.http4s.Request
+import org.scalacheck.Arbitrary
+import org.scalacheck.Gen
 import org.scalacheck.effect.PropF.forAllF
-import org.scalacheck.{Arbitrary, Gen}
 import scodec.bits.ByteVector
 
 class CborSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
