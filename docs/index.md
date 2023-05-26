@@ -142,3 +142,14 @@ class Csv2CborHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
 }
 ```
 
+You can try yourself with this snippet:
+
+```shell
+curl -s -X "POST" "http://localhost:8080/csv/toCbor" \
+     -H 'Content-Type: text/csv; charset=utf-8' \
+     -d $'1,Ene,Mene
+2,Muh,!' | od -A n -t x1
+```
+
+Then copy the output to [https://geraintluff.github.io/cbor-debug/](https://geraintluff.github.io/cbor-debug/) or a similar CBOR viewer.
+
