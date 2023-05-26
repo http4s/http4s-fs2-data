@@ -112,3 +112,33 @@ class CsvStatsHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
 }
 ```
 
+## http4s-fs2-data-cbor
+
+Provides basic support for parsing and encoding CBOR streams that can be handled in a streaming fashion, either
+treating the in/output as a stream itself or as a single value.
+
+### Example
+
+This example consumes a CSV input, converts it to CBOR as a simple stream of arrays provides and returns it.
+
+```scala mdoc
+import fs2.Stream
+import fs2.data.cbor.high.CborValue
+import fs2.data.csv._
+import org.http4s.fs2data.cbor._
+import org.http4s.fs2data.csv._
+
+class Csv2CborHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
+
+  private implicit val decoder: EntityDecoder[F, Stream[F, Row]] = rowDecoder()
+  
+  val service: HttpRoutes[F] = HttpRoutes.of { 
+    case req @ POST -> Root / "csv" / "toCbor" =>
+      Ok(Stream.force(req.as[Stream[F, Row]]).map(toCbor))
+  }
+  
+  private def toCbor(row: Row): CborValue =
+    CborValue.Array(row.values.toList.map(CborValue.TextString(_)), false)
+}
+```
+
