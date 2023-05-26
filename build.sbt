@@ -14,9 +14,9 @@ ThisBuild / jsEnv := {
   new NodeJSEnv(NodeJSEnv.Config().withEnv(Map("TZ" -> "UTC")))
 }
 
-lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv)
+lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor)
 
-val http4sVersion = "0.23.18"
+val http4sVersion = "0.23.19"
 val scalaXmlVersion = "2.1.0"
 val fs2Version = "3.7.0"
 val fs2DataVersion = "1.7.1"
@@ -78,12 +78,30 @@ lazy val csv = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     ),
   )
 
+lazy val cbor = crossProject(JVMPlatform, JSPlatform, NativePlatform)
+  .crossType(CrossType.Pure)
+  .in(file("cbor"))
+  .settings(
+    name := "http4s-fs2-data-cbor",
+    description := "Provides CBOR codecs for http4s via fs2-data",
+    startYear := Some(2023),
+    tlVersionIntroduced := Map("2.12" -> "0.2", "2.13" -> "0.2", "3" -> "0.2"),
+    libraryDependencies ++= Seq(
+      "co.fs2" %%% "fs2-core" % fs2Version,
+      "org.http4s" %%% "http4s-core" % http4sVersion,
+      "org.gnieh" %%% "fs2-data-cbor" % fs2DataVersion,
+      "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
+      "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
+    ),
+  )
+
 lazy val docs = project
   .in(file("site"))
-  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm)
+  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm)
   .settings(
     libraryDependencies ++= Seq(
-      "io.circe" %%% "circe-generic" % "0.14.1",
+      "io.circe" %%% "circe-generic" % "0.14.5",
       "org.http4s" %%% "http4s-dsl" % http4sVersion,
       "org.http4s" %%% "http4s-circe" % http4sVersion,
       "org.gnieh" %%% "fs2-data-csv-generic" % fs2DataVersion,
