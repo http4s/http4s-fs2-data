@@ -151,5 +151,5 @@ curl -s -X "POST" "http://localhost:8080/csv/toCbor" \
 2,Muh,!' | od -A n -t x1
 ```
 
-Then copy the output to [https://geraintluff.github.io/cbor-debug/](https://geraintluff.github.io/cbor-debug/) or a similar CBOR viewer.
+Then copy the output to [https://cbor.me](https://cbor.me) or a similar CBOR viewer. Make sure to view as `cborseq` otherwise the output will be truncated.
 
