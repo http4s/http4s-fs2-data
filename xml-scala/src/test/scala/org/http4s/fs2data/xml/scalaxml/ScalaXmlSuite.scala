@@ -70,7 +70,7 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
   }
 
   test("parse XML in parallel") {
-    val req = Request(body =
+    val req = Request().withEntity(
       strBody("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><html><h1>h1</h1></html>""")
     )
     // https://github.com/http4s/http4s/issues/1209
@@ -85,7 +85,7 @@ class ScalaXmlSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
 
   test("return 400 on parse error") {
     val body = strBody("This is not XML.")
-    val tresp = server(Request[IO](body = body))
+    val tresp = server(Request[IO]().withEntity(body))
     tresp.map(_.status).assertEquals(Status.BadRequest)
   }
 
