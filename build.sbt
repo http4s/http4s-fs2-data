@@ -4,8 +4,8 @@ ThisBuild / developers := List(
   tlGitHubDev("ybasket", "Yannick Heiber"),
 )
 
-val Scala213 = "2.13.10"
-ThisBuild / crossScalaVersions := Seq("2.12.17", Scala213, "3.2.2")
+val Scala213 = "2.13.11"
+ThisBuild / crossScalaVersions := Seq("2.12.18", Scala213, "3.3.0")
 ThisBuild / scalaVersion := Scala213
 
 // ensure missing timezones don't break tests on JS
@@ -16,10 +16,10 @@ ThisBuild / jsEnv := {
 
 lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor)
 
-val http4sVersion = "0.23.19"
-val scalaXmlVersion = "2.1.0"
+val http4sVersion = "0.23.23"
+val scalaXmlVersion = "2.2.0"
 val fs2Version = "3.7.0"
-val fs2DataVersion = "1.7.1"
+val fs2DataVersion = "1.8.0"
 val munitVersion = "1.0.0-M8"
 val munitCatsEffectVersion = "2.0.0-M3"
 
