@@ -16,7 +16,7 @@ ThisBuild / jsEnv := {
 
 lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor)
 
-val http4sVersion = "0.23.23"
+val http4sVersion = "0.23.25"
 val scalaXmlVersion = "2.2.0"
 val fs2Version = "3.8.0"
 val fs2DataVersion = "1.8.0"
