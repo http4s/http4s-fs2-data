@@ -96,6 +96,24 @@ lazy val cbor = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     ),
   )
 
+lazy val json = crossProject(JVMPlatform, JSPlatform, NativePlatform)
+  .crossType(CrossType.Pure)
+  .in(file("json"))
+  .settings(
+    name := "http4s-fs2-data-json",
+    description := "Provides JSON codecs for http4s via fs2-data",
+    startYear := Some(2023),
+    tlVersionIntroduced := Map("2.12" -> "0.2", "2.13" -> "0.2", "3" -> "0.2"),
+    libraryDependencies ++= Seq(
+      "co.fs2" %%% "fs2-core" % fs2Version,
+      "org.http4s" %%% "http4s-core" % http4sVersion,
+      "org.gnieh" %%% "fs2-data-json" % fs2DataVersion,
+      "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
+      "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
+    ),
+  )
+
 lazy val docs = project
   .in(file("site"))
   .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm)
