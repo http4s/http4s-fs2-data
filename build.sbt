@@ -102,8 +102,8 @@ lazy val json = crossProject(JVMPlatform, JSPlatform, NativePlatform)
   .settings(
     name := "http4s-fs2-data-json",
     description := "Provides JSON codecs for http4s via fs2-data",
-    startYear := Some(2023),
-    tlVersionIntroduced := Map("2.12" -> "0.2", "2.13" -> "0.2", "3" -> "0.2"),
+    startYear := Some(2024),
+    tlVersionIntroduced := Map("2.12" -> "0.3", "2.13" -> "0.3", "3" -> "0.3"),
     libraryDependencies ++= Seq(
       "co.fs2" %%% "fs2-core" % fs2Version,
       "org.http4s" %%% "http4s-core" % http4sVersion,
