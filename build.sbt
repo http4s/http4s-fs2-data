@@ -116,7 +116,7 @@ lazy val json = crossProject(JVMPlatform, JSPlatform, NativePlatform)
 
 lazy val docs = project
   .in(file("site"))
-  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm)
+  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm, json.jvm)
   .settings(
     libraryDependencies ++= Seq(
       "io.circe" %%% "circe-generic" % "0.14.5",
