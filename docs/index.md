@@ -153,3 +153,58 @@ curl -s -X "POST" "http://localhost:8080/csv/toCbor" \
 
 Then copy the output to [https://cbor.me](https://cbor.me) or a similar CBOR viewer. Make sure to view as `cborseq` otherwise the output will be truncated.
 
+
+
+## http4s-fs2-data-json
+
+Provides basic support for parsing and encoding `fs2.data.json.Token` streams that can be handled in a streaming fashion
+using the pipes and builders `fs2-data` provides.
+
+```scala
+libraryDependencies += "org.http4s" %% "http4s-fs2-data-json" % "@VERSION@"
+```
+
+### Example
+
+This example consumes a JSON input and returns it pretty printed.
+
+```scala mdoc
+import cats.effect.Async
+import org.http4s.{EntityDecoder, EntityEncoder, HttpRoutes}
+import org.http4s.dsl.Http4sDsl
+import fs2.Stream
+import fs2.data.json.Token
+
+class JsonHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
+
+  private implicit val payloadDecoder: EntityDecoder[F, Stream[F, Token]] =
+    org.http4s.fs2data.json.jsonTokensDecoder
+
+  private implicit val payloadEncoder: EntityEncoder[F, Stream[F, Token]] =
+    org.http4s.fs2data.json.jsonTokensEncoder(prettyPrint = true)
+
+  val service: HttpRoutes[F] = HttpRoutes.of {
+    case req @ POST -> Root / "prettyJson" =>
+      Ok(Stream.force(req.as[Stream[F, Token]]))
+  }
+}
+```
+
+You can try yourself with this snippet:
+
+```shell
+curl -s -X "POST" "http://localhost:8080/prettyJson" \
+     -H 'Content-Type: text/json; charset=utf-8' \
+     -d '{"a":2024,"b":[true,false],"c":{"d":"e"},"d":1}'
+{
+  "a": 2024,
+  "b": [
+    true,
+    false
+  ],
+  "c": {
+    "d": "e"
+  },
+  "d": 1
+}
+```
