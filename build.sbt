@@ -1,4 +1,4 @@
-ThisBuild / tlBaseVersion := "0.2"
+ThisBuild / tlBaseVersion := "0.3"
 ThisBuild / developers := List(
   tlGitHubDev("rossabaker", "Ross A. Baker"),
   tlGitHubDev("ybasket", "Yannick Heiber"),
@@ -66,7 +66,6 @@ lazy val csv = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     name := "http4s-fs2-data-csv",
     description := "Provides csv codecs for http4s via fs2-data",
     startYear := Some(2023),
-    tlVersionIntroduced := Map("2.12" -> "0.2", "2.13" -> "0.2", "3" -> "0.2"),
     libraryDependencies ++= Seq(
       "co.fs2" %%% "fs2-core" % fs2Version,
       "org.http4s" %%% "http4s-core" % http4sVersion,
@@ -85,7 +84,6 @@ lazy val cbor = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     name := "http4s-fs2-data-cbor",
     description := "Provides CBOR codecs for http4s via fs2-data",
     startYear := Some(2023),
-    tlVersionIntroduced := Map("2.12" -> "0.2", "2.13" -> "0.2", "3" -> "0.2"),
     libraryDependencies ++= Seq(
       "co.fs2" %%% "fs2-core" % fs2Version,
       "org.http4s" %%% "http4s-core" % http4sVersion,
@@ -96,9 +94,26 @@ lazy val cbor = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     ),
   )
 
+lazy val json = crossProject(JVMPlatform, JSPlatform, NativePlatform)
+  .crossType(CrossType.Pure)
+  .in(file("json"))
+  .settings(
+    name := "http4s-fs2-data-json",
+    description := "Provides JSON codecs for http4s via fs2-data",
+    startYear := Some(2024),
+    libraryDependencies ++= Seq(
+      "co.fs2" %%% "fs2-core" % fs2Version,
+      "org.http4s" %%% "http4s-core" % http4sVersion,
+      "org.gnieh" %%% "fs2-data-json" % fs2DataVersion,
+      "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
+      "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
+    ),
+  )
+
 lazy val docs = project
   .in(file("site"))
-  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm)
+  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm, json.jvm)
   .settings(
     libraryDependencies ++= Seq(
       "io.circe" %%% "circe-generic" % "0.14.5",

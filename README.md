@@ -5,6 +5,7 @@ Home of http4s integrations with [fs2-data][fs2-data]. Initially forked from [ht
 * XML and Scala XML. Works as a drop-in replacement for [http4s-scala-xml][http4s-scala-xml]
 * CSV
 * CBOR
+* JSON
 
 Check out the [docs][docs] for examples.
 
