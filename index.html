@@ -128,6 +128,8 @@
           <li class="level2"><a href="#example-2">Example</a></li>
           <li class="level1"><a href="#http4s-fs2-data-cbor">http4s-fs2-data-cbor</a></li>
           <li class="level2"><a href="#example-3">Example</a></li>
+          <li class="level1"><a href="#http4s-fs2-data-json">http4s-fs2-data-json</a></li>
+          <li class="level2"><a href="#example-4">Example</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -263,6 +265,48 @@
      -d $&#39;1,Ene,Mene
 2,Muh,!&#39; | od -A n -t x1</code></pre>
         <p>Then copy the output to <a href="https://cbor.me"><a href="https://cbor.me">https://cbor.me</a></a> or a similar CBOR viewer. Make sure to view as <code>cborseq</code> otherwise the output will be truncated.</p>
+        
+        <h2 id="http4s-fs2-data-json" class="section">http4s-fs2-data-json<a class="anchor-link right" href="#http4s-fs2-data-json"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <p>Provides basic support for parsing and encoding <code>fs2.data.json.Token</code> streams that can be handled in a streaming fashion
+        using the pipes and builders <code>fs2-data</code> provides.</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;org.http4s&quot;</span><span> %% </span><span class="string-literal">&quot;http4s-fs2-data-json&quot;</span><span> % </span><span class="string-literal">&quot;0.2.0&quot;</span></code></pre>
+        
+        <h3 id="example-4" class="section">Example<a class="anchor-link right" href="#example-4"><i class="icofont-laika">&#xef71;</i></a></h3>
+        <p>This example consumes a JSON input and returns it pretty printed.</p>
+        <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Async</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.{</span><span class="type-name">EntityDecoder</span><span>, </span><span class="type-name">EntityEncoder</span><span>, </span><span class="type-name">HttpRoutes</span><span>}
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">dsl</span><span>.</span><span class="type-name">Http4sDsl</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="type-name">Stream</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">fs2</span><span>.</span><span class="identifier">data</span><span>.</span><span class="identifier">json</span><span>.</span><span class="type-name">Token</span><span>
+
+</span><span class="keyword">class</span><span> </span><span class="type-name">JsonHttpEndpoint</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="keyword">implicit</span><span> </span><span class="type-name">F</span><span>: </span><span class="type-name">Async</span><span>[</span><span class="type-name">F</span><span>]) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+
+  </span><span class="keyword">private</span><span> </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">payloadDecoder</span><span>: </span><span class="type-name">EntityDecoder</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Token</span><span>]] =
+    </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">fs2data</span><span>.</span><span class="identifier">json</span><span>.</span><span class="identifier">jsonTokensDecoder</span><span>
+
+  </span><span class="keyword">private</span><span> </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">payloadEncoder</span><span>: </span><span class="type-name">EntityEncoder</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Token</span><span>]] =
+    </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">fs2data</span><span>.</span><span class="identifier">json</span><span>.</span><span class="identifier">jsonTokensEncoder</span><span>(</span><span class="identifier">prettyPrint</span><span> = </span><span class="boolean-literal">true</span><span>)
+
+  </span><span class="keyword">val</span><span> </span><span class="identifier">service</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="type-name">HttpRoutes</span><span>.</span><span class="identifier">of</span><span> {
+    </span><span class="keyword">case</span><span> </span><span class="identifier">req</span><span> @ </span><span class="type-name">POST</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;prettyJson&quot;</span><span> =&gt;
+      </span><span class="type-name">Ok</span><span>(</span><span class="type-name">Stream</span><span>.</span><span class="identifier">force</span><span>(</span><span class="identifier">req</span><span>.</span><span class="identifier">as</span><span>[</span><span class="type-name">Stream</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Token</span><span>]]))
+  }
+}</span></code></pre>
+        <p>You can try yourself with this snippet:</p>
+        <pre><code class="shell">curl -s -X &quot;POST&quot; &quot;http://localhost:8080/prettyJson&quot; \
+     -H &#39;Content-Type: text/json; charset=utf-8&#39; \
+     -d &#39;{&quot;a&quot;:2024,&quot;b&quot;:[true,false],&quot;c&quot;:{&quot;d&quot;:&quot;e&quot;},&quot;d&quot;:1}&#39;
+{
+  &quot;a&quot;: 2024,
+  &quot;b&quot;: [
+    true,
+    false
+  ],
+  &quot;c&quot;: {
+    &quot;d&quot;: &quot;e&quot;
+  },
+  &quot;d&quot;: 1
+}</code></pre>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
