@@ -5,7 +5,7 @@ ThisBuild / developers := List(
 )
 
 val Scala213 = "2.13.11"
-ThisBuild / crossScalaVersions := Seq("2.12.18", Scala213, "3.3.0")
+ThisBuild / crossScalaVersions := Seq("2.12.18", Scala213, "3.3.1")
 ThisBuild / scalaVersion := Scala213
 
 // ensure missing timezones don't break tests on JS
