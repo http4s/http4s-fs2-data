@@ -29,7 +29,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        scala: [2.12.18, 2.13.12, 3.3.0]
+        scala: [2.12.18, 2.13.12, 3.3.1]
         java: [temurin@8, temurin@11, temurin@17]
         project: [rootJS, rootJVM, rootNative]
         exclude:
@@ -37,9 +37,9 @@ jobs:
             java: temurin@11
           - scala: 2.12.18
             java: temurin@17
-          - scala: 3.3.0
+          - scala: 3.3.1
             java: temurin@11
-          - scala: 3.3.0
+          - scala: 3.3.1
             java: temurin@17
           - project: rootJS
             java: temurin@11
@@ -152,11 +152,11 @@ jobs:
 
       - name: Make target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: mkdir -p target .js/target cbor/.js/target site/target csv/.jvm/target xml/.jvm/target xml-scala/.js/target xml/.js/target cbor/.native/target xml-scala/.native/target cbor/.jvm/target xml-scala/.jvm/target csv/.native/target .jvm/target csv/.js/target .native/target xml/.native/target project/target
+        run: mkdir -p json/.native/target target .js/target cbor/.js/target site/target json/.jvm/target csv/.jvm/target xml/.jvm/target xml-scala/.js/target xml/.js/target cbor/.native/target xml-scala/.native/target cbor/.jvm/target xml-scala/.jvm/target csv/.native/target .jvm/target csv/.js/target .native/target xml/.native/target json/.js/target project/target
 
       - name: Compress target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: tar cf targets.tar target .js/target cbor/.js/target site/target csv/.jvm/target xml/.jvm/target xml-scala/.js/target xml/.js/target cbor/.native/target xml-scala/.native/target cbor/.jvm/target xml-scala/.jvm/target csv/.native/target .jvm/target csv/.js/target .native/target xml/.native/target project/target
+        run: tar cf targets.tar json/.native/target target .js/target cbor/.js/target site/target json/.jvm/target csv/.jvm/target xml/.jvm/target xml-scala/.js/target xml/.js/target cbor/.native/target xml-scala/.native/target cbor/.jvm/target xml-scala/.jvm/target csv/.native/target .jvm/target csv/.js/target .native/target xml/.native/target json/.js/target project/target
 
       - name: Upload target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
@@ -300,32 +300,32 @@ jobs:
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (3.3.0, rootJS)
+      - name: Download target directories (3.3.1, rootJS)
         uses: actions/download-artifact@v3
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.0-rootJS
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.1-rootJS
 
-      - name: Inflate target directories (3.3.0, rootJS)
+      - name: Inflate target directories (3.3.1, rootJS)
         run: |
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (3.3.0, rootJVM)
+      - name: Download target directories (3.3.1, rootJVM)
         uses: actions/download-artifact@v3
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.0-rootJVM
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.1-rootJVM
 
-      - name: Inflate target directories (3.3.0, rootJVM)
+      - name: Inflate target directories (3.3.1, rootJVM)
         run: |
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (3.3.0, rootNative)
+      - name: Download target directories (3.3.1, rootNative)
         uses: actions/download-artifact@v3
         with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.0-rootNative
+          name: target-${{ matrix.os }}-${{ matrix.java }}-3.3.1-rootNative
 
-      - name: Inflate target directories (3.3.0, rootNative)
+      - name: Inflate target directories (3.3.1, rootNative)
         run: |
           tar xf targets.tar
           rm targets.tar

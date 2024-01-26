@@ -434,7 +434,10 @@ object generators {
       n <- Gen.poisson(5)
       s <- Gen.stringOfN(n, Gen.oneOf(char))
       // Text may not contain these two in literal form, §2.4 of XML syntax
-      r = s.replace("&", "&amp;").replace("<", "&lt;")
+      // We replace them by empty strings instead of their quoted versions because Scala XML fails the roundtrip
+      // Relates to https://github.com/scala/scala-xml/issues/57
+      // Works around https://github.com/http4s/http4s-fs2-data/issues/88
+      r = s.replace("&", "").replace("<", "")
     } yield Text(r)
 
   val genComment: Gen[Comment] =
