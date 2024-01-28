@@ -1,10 +1,13 @@
 ThisBuild / tlBaseVersion := "0.3"
+ThisBuild / tlJdkRelease := Some(11)
+// exclude Java 8 from CI as fs2-data doesn't support it
+ThisBuild / githubWorkflowJavaVersions -= JavaSpec.temurin("8")
 ThisBuild / developers := List(
   tlGitHubDev("rossabaker", "Ross A. Baker"),
   tlGitHubDev("ybasket", "Yannick Heiber"),
 )
 
-val Scala213 = "2.13.11"
+val Scala213 = "2.13.12"
 ThisBuild / crossScalaVersions := Seq("2.12.18", Scala213, "3.3.1")
 ThisBuild / scalaVersion := Scala213
 
@@ -13,6 +16,10 @@ ThisBuild / jsEnv := {
   import org.scalajs.jsenv.nodejs.NodeJSEnv
   new NodeJSEnv(NodeJSEnv.Config().withEnv(Map("TZ" -> "UTC")))
 }
+
+// ensure we don't fail compilation – package objects with inheritance are used in http4s/http4s as well,
+// better to stay style-consistent for now
+ThisBuild / scalacOptions += "-Wconf:msg=package object inheritance is deprecated:s"
 
 lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor)
 
