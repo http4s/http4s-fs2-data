@@ -1,4 +1,5 @@
 ThisBuild / tlBaseVersion := "0.3"
+ThisBuild / tlJdkRelease := Some(11)
 ThisBuild / developers := List(
   tlGitHubDev("rossabaker", "Ross A. Baker"),
   tlGitHubDev("ybasket", "Yannick Heiber"),
