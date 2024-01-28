@@ -16,6 +16,4 @@
 
 package org.http4s.fs2data
 
-import scala.annotation.nowarn
-
-package object xml extends XmlEventInstances @nowarn
+package object xml extends XmlEventInstances

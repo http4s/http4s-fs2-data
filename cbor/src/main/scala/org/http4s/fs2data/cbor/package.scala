@@ -16,6 +16,4 @@
 
 package org.http4s.fs2data
 
-import scala.annotation.nowarn
-
-package object cbor extends CborInstances @nowarn
+package object cbor extends CborInstances

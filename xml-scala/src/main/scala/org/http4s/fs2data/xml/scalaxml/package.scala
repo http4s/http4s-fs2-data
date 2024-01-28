@@ -16,6 +16,4 @@
 
 package org.http4s.fs2data.xml
 
-import scala.annotation.nowarn
-
-package object scalaxml extends ElemInstances @nowarn
+package object scalaxml extends ElemInstances
