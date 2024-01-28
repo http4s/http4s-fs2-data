@@ -16,4 +16,7 @@
 
 package org.http4s.fs2data
 
+import scala.annotation.nowarn
+
+@nowarn
 package object json extends JsonInstances

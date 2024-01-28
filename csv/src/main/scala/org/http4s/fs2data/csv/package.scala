@@ -16,4 +16,6 @@
 
 package org.http4s.fs2data
 
-package object csv extends CsvInstances
+import scala.annotation.nowarn
+
+package object csv extends CsvInstances @nowarn
