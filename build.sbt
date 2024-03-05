@@ -23,7 +23,7 @@ ThisBuild / scalacOptions += "-Wconf:msg=package object inheritance is deprecate
 
 lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor)
 
-val http4sVersion = "0.23.25"
+val http4sVersion = "0.23.26"
 val scalaXmlVersion = "2.2.0"
 val fs2Version = "3.9.4"
 val fs2DataVersion = "1.10.0"
