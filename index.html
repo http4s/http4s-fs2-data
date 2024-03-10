@@ -247,7 +247,7 @@
   }
   
   </span><span class="keyword">private</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">toCbor</span><span>(</span><span class="identifier">row</span><span>: </span><span class="type-name">Row</span><span>): </span><span class="type-name">CborValue</span><span> =
-    </span><span class="type-name">CborValue</span><span>.</span><span class="type-name">Array</span><span>(</span><span class="identifier">row</span><span>.</span><span class="identifier">values</span><span>.</span><span class="identifier">toList</span><span>.</span><span class="identifier">map</span><span>(</span><span class="type-name">CborValue</span><span>.</span><span class="type-name">TextString</span><span>(</span><span class="identifier">_</span><span>)), </span><span class="boolean-literal">false</span><span>)
+    </span><span class="type-name">CborValue</span><span>.</span><span class="type-name">Array</span><span>(</span><span class="identifier">row</span><span>.</span><span class="identifier">values</span><span>.</span><span class="identifier">toList</span><span>.</span><span class="identifier">map</span><span>(</span><span class="type-name">CborValue</span><span>.</span><span class="type-name">TextString</span><span>(</span><span class="identifier">_</span><span>)), </span><span class="identifier">indefinite</span><span> = </span><span class="boolean-literal">false</span><span>)
 }</span></code></pre>
         <p>You can try yourself with this snippet:</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span>curl -s -X </span><span class="string-literal">&quot;POST&quot;</span><span> </span><span class="string-literal">&quot;http://localhost:8080/csv/toCbor&quot;</span><span> \
