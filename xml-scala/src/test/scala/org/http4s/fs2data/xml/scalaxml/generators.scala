@@ -474,6 +474,6 @@ object generators {
     label <- genNcName
     attributes <- genAttributes
     children <- genContent
-    elem = Elem(prefix, label, attributes, TopScope, true, children: _*)
+    elem = Elem(prefix, label, attributes, TopScope, minimizeEmpty = true, child = children: _*)
   } yield Utility.trim(elem).asInstanceOf[Elem]
 }
