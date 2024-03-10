@@ -138,7 +138,7 @@ class Csv2CborHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
   }
   
   private def toCbor(row: Row): CborValue =
-    CborValue.Array(row.values.toList.map(CborValue.TextString(_)), false)
+    CborValue.Array(row.values.toList.map(CborValue.TextString(_)), indefinite = false)
 }
 ```
 
