@@ -21,7 +21,7 @@ ThisBuild / jsEnv := {
 // better to stay style-consistent for now
 ThisBuild / scalacOptions += "-Wconf:msg=package object inheritance is deprecated:s"
 
-lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor)
+lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor, json)
 
 val http4sVersion = "0.23.26"
 val scalaXmlVersion = "2.2.0"
