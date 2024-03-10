@@ -1,4 +1,4 @@
-ThisBuild / tlBaseVersion := "0.3"
+ThisBuild / tlBaseVersion := "0.4"
 ThisBuild / tlJdkRelease := Some(11)
 // exclude Java 8 from CI as fs2-data doesn't support it
 ThisBuild / githubWorkflowJavaVersions -= JavaSpec.temurin("8")
@@ -8,7 +8,7 @@ ThisBuild / developers := List(
 )
 
 val Scala213 = "2.13.13"
-ThisBuild / crossScalaVersions := Seq("2.12.18", Scala213, "3.3.1")
+ThisBuild / crossScalaVersions := Seq("2.12.19", Scala213, "3.3.3")
 ThisBuild / scalaVersion := Scala213
 
 // ensure missing timezones don't break tests on JS
@@ -21,13 +21,13 @@ ThisBuild / jsEnv := {
 // better to stay style-consistent for now
 ThisBuild / scalacOptions += "-Wconf:msg=package object inheritance is deprecated:s"
 
-lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor)
+lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor, json)
 
-val http4sVersion = "0.23.25"
+val http4sVersion = "0.23.26"
 val scalaXmlVersion = "2.2.0"
 val fs2Version = "3.9.4"
 val fs2DataVersion = "1.10.0"
-val munitVersion = "1.0.0-M10"
+val munitVersion = "1.0.0-M11"
 val munitCatsEffectVersion = "2.0.0-M4"
 
 lazy val xml = crossProject(JVMPlatform, JSPlatform, NativePlatform)

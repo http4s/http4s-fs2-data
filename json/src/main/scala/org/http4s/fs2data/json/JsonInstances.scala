@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 http4s.org
+ * Copyright 2024 http4s.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,12 @@ import cats.data.NonEmptyList
 import cats.effect.Concurrent
 import cats.syntax.applicative._
 import cats.syntax.monadError._
-import fs2.data.json._
-import fs2.Stream
 import cats.syntax.show._
+import fs2.Stream
+import fs2.data.json._
 import org.http4s.Charset.`UTF-8`
-import org.http4s.headers.{`Content-Type`, `Transfer-Encoding`}
+import org.http4s.headers.`Content-Type`
+import org.http4s.headers.`Transfer-Encoding`
 
 trait JsonInstances {
 
