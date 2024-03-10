@@ -74,7 +74,7 @@ class CsvSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
       csvEncoderForPipe(encodeUsingFirstHeaders())
     implicit val decoder: EntityDecoder[IO, Stream[IO, Data]] =
       csvDecoderForPipe(decodeUsingHeaders[Data]())
-    val in = List(Data("a", 2, true), Data("b", 3, false))
+    val in = List(Data("a", 2, third = true), Data("b", 3, third = false))
     Stream
       .force(Request[IO]().withEntity(Stream.emits(in).covary[IO]).as[Stream[IO, Data]])
       .compile

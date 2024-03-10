@@ -44,7 +44,7 @@ class XmlEventSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
       .withEntity(in)
       .as[Stream[IO, XmlEvent]]
       .map(Request[IO]().withEntity(_))
-      .flatMap(EntityDecoder.text[IO].decode(_, false).value)
+      .flatMap(EntityDecoder.text[IO].decode(_, strict = false).value)
       .assertEquals(Right(in))
   }
 
@@ -64,7 +64,7 @@ class XmlEventSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
       .force(
         Request[IO]()
           .withEntity(in.lift[IO])
-          .as[Stream[IO, XmlEvent]](implicitly, xmlEventsDecoder(false))
+          .as[Stream[IO, XmlEvent]](implicitly, xmlEventsDecoder(includeComments = false))
       )
       .compile
       .toList
