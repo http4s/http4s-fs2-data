@@ -6,6 +6,8 @@ ThisBuild / developers := List(
   tlGitHubDev("rossabaker", "Ross A. Baker"),
   tlGitHubDev("ybasket", "Yannick Heiber"),
 )
+ThisBuild / homepage := Some(url("https://github.com/http4s/http4s-fs2-data"))
+ThisBuild / licenses := List(License.Apache2)
 
 val Scala213 = "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.12.20", Scala213, "3.3.5")
@@ -21,7 +23,8 @@ ThisBuild / jsEnv := {
 // better to stay style-consistent for now
 ThisBuild / scalacOptions += "-Wconf:msg=package object inheritance is deprecated:s"
 
-lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor, json)
+lazy val root =
+  tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor, json).disablePlugins(HeaderPlugin)
 
 val http4sVersion = "0.23.30"
 val scalaXmlVersion = "2.2.0"
