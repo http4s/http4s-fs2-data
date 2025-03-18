@@ -1,4 +1,4 @@
-ThisBuild / tlBaseVersion := "0.4"
+ThisBuild / tlBaseVersion := "0.5"
 ThisBuild / tlJdkRelease := Some(11)
 // exclude Java 8 from CI as fs2-data doesn't support it
 ThisBuild / githubWorkflowJavaVersions -= JavaSpec.temurin("8")
