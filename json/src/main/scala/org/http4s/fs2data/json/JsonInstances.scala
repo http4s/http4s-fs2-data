@@ -44,7 +44,7 @@ trait JsonInstances {
       )
     }
 
-  def jsonTokensEncoder[F[_]](prettyPrint: Boolean)(implicit
+  def jsonTokensEncoder[F[_]](prettyPrint: Boolean, width: Int = 100, indent: Int = 2)(implicit
       charset: Charset = `UTF-8`
   ): EntityEncoder[F, Stream[F, Token]] = EntityEncoder.encodeBy(
     Headers(
@@ -55,7 +55,7 @@ trait JsonInstances {
     Entity(
       tokens
         .through(
-          if (prettyPrint) render.pretty() else render.compact
+          if (prettyPrint) render.prettyPrint(width, indent) else render.compact
         )
         .through(fs2.text.encode[F](charset.nioCharset))
     )

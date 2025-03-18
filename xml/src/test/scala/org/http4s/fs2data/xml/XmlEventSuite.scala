@@ -49,7 +49,7 @@ class XmlEventSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
   }
 
   test("preserves comments by default") {
-    val in = rawxml"""<?xml version="1.0"?><root><!-- here's a comment --></root>"""
+    val in = rawxml"""<?xml version="1.0"?><root><!--here's a comment--></root>"""
     Stream
       .force(Request[IO]().withEntity(in.lift[IO]).as[Stream[IO, XmlEvent]])
       .compile
@@ -59,7 +59,7 @@ class XmlEventSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
   }
 
   test("can disable comments") {
-    val in = rawxml"""<?xml version="1.0"?><root><!-- here's a comment --></root>"""
+    val in = rawxml"""<?xml version="1.0"?><root><!--here's a comment--></root>"""
     Stream
       .force(
         Request[IO]()

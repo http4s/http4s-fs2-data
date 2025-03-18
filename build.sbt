@@ -1,4 +1,4 @@
-ThisBuild / tlBaseVersion := "0.4"
+ThisBuild / tlBaseVersion := "0.5"
 ThisBuild / tlJdkRelease := Some(11)
 // exclude Java 8 from CI as fs2-data doesn't support it
 ThisBuild / githubWorkflowJavaVersions -= JavaSpec.temurin("8")
@@ -6,9 +6,11 @@ ThisBuild / developers := List(
   tlGitHubDev("rossabaker", "Ross A. Baker"),
   tlGitHubDev("ybasket", "Yannick Heiber"),
 )
+ThisBuild / homepage := Some(url("https://github.com/http4s/http4s-fs2-data"))
+ThisBuild / licenses := List(License.Apache2)
 
-val Scala213 = "2.13.13"
-ThisBuild / crossScalaVersions := Seq("2.12.19", Scala213, "3.3.4")
+val Scala213 = "2.13.16"
+ThisBuild / crossScalaVersions := Seq("2.12.20", Scala213, "3.3.5")
 ThisBuild / scalaVersion := Scala213
 
 // ensure missing timezones don't break tests on JS
@@ -21,12 +23,16 @@ ThisBuild / jsEnv := {
 // better to stay style-consistent for now
 ThisBuild / scalacOptions += "-Wconf:msg=package object inheritance is deprecated:s"
 
-lazy val root = tlCrossRootProject.aggregate(xml, xmlScala, csv, cbor, json)
+lazy val root =
+  tlCrossRootProject
+    .aggregate(xml, xmlScala, csv, cbor, json)
+    .disablePlugins(HeaderPlugin)
+    .settings(libraryDependencies := Nil)
 
-val http4sVersion = "0.23.27"
+val http4sVersion = "0.23.30"
 val scalaXmlVersion = "2.2.0"
-val fs2Version = "3.10.2"
-val fs2DataVersion = "1.10.0"
+val fs2Version = "3.11.0"
+val fs2DataVersion = "1.11.2"
 val munitVersion = "1.0.0-M11"
 val munitCatsEffectVersion = "2.0.0"
 
