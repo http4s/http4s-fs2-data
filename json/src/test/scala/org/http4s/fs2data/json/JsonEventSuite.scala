@@ -64,7 +64,7 @@ class JsonEventSuite extends CatsEffectSuite with ScalaCheckEffectSuite {
     Request[IO]()
       .withEntity(in)
       .as[Stream[IO, Token]]
-      .map(Request[IO]().withEntity(_)(jsonTokensEncoder[IO](prettyPrint = true)))
+      .map(Request[IO]().withEntity(_)(jsonTokensEncoder[IO](prettyPrint = true, width = 10)))
       .flatMap(EntityDecoder.text[IO].decode(_, strict = false).value)
       .assertEquals(Right(in))
   }

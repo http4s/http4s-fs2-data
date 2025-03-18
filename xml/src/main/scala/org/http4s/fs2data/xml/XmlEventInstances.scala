@@ -47,7 +47,7 @@ trait XmlEventInstances {
     )(events =>
       Entity(
         events
-          .through(render())
+          .through(render.raw())
           .through(fs2.text.encode[F](charset.nioCharset))
       )
     )
