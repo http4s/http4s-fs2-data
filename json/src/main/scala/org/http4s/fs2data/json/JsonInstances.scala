@@ -30,11 +30,13 @@ import org.http4s.headers.`Transfer-Encoding`
 
 trait JsonInstances {
 
-  implicit def jsonTokensDecoder[F[_]: Concurrent]: EntityDecoder[F, Stream[F, Token]] =
+  implicit def jsonTokensDecoder[F[_]: Concurrent]: EntityDecoder[F, Vector[Token]] =
     EntityDecoder.decodeBy(MediaType.application.json) { msg =>
       DecodeResult.successT(
         msg.bodyText
           .through(tokens)
+          .compile
+          .toVector
           .adaptError { case ex: JsonException =>
             MalformedMessageBodyFailure(
               s"Invalid Json (${ex.context.fold("No context")(jc => jc.show)}): ${ex.msg}",
