@@ -34,7 +34,7 @@ val scalaXmlVersion = "2.2.0"
 val fs2Version = "3.11.0"
 val fs2DataVersion = "1.11.2"
 val munitVersion = "1.0.0-M11"
-val munitCatsEffectVersion = "2.0.0"
+val munitCatsEffectVersion = "2.1.0"
 
 lazy val xml = crossProject(JVMPlatform, JSPlatform, NativePlatform)
   .crossType(CrossType.Pure)
