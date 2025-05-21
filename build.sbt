@@ -32,7 +32,7 @@ lazy val root =
 val http4sVersion = "0.23.30"
 val scalaXmlVersion = "2.2.0"
 val fs2Version = "3.12.0"
-val fs2DataVersion = "1.11.2"
+val fs2DataVersion = "1.11.3"
 val munitVersion = "1.0.0-M11"
 val munitCatsEffectVersion = "2.1.0"
 
