@@ -9,7 +9,7 @@ ThisBuild / developers := List(
 ThisBuild / homepage := Some(url("https://github.com/http4s/http4s-fs2-data"))
 ThisBuild / licenses := List(License.Apache2)
 
-val Scala213 = "2.13.16"
+val Scala213 = "2.13.17"
 ThisBuild / crossScalaVersions := Seq("2.12.20", Scala213, "3.3.6")
 ThisBuild / scalaVersion := Scala213
 
