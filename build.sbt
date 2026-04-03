@@ -9,8 +9,8 @@ ThisBuild / developers := List(
 ThisBuild / homepage := Some(url("https://github.com/http4s/http4s-fs2-data"))
 ThisBuild / licenses := List(License.Apache2)
 
-val Scala213 = "2.13.16"
-ThisBuild / crossScalaVersions := Seq("2.12.20", Scala213, "3.3.6")
+val Scala213 = "2.13.18"
+ThisBuild / crossScalaVersions := Seq("2.12.21", Scala213, "3.3.7")
 ThisBuild / scalaVersion := Scala213
 
 // ensure missing timezones don't break tests on JS
@@ -29,10 +29,10 @@ lazy val root =
     .disablePlugins(HeaderPlugin)
     .settings(libraryDependencies := Nil)
 
-val http4sVersion = "0.23.30"
+val http4sVersion = "0.23.33"
 val scalaXmlVersion = "2.2.0"
-val fs2Version = "3.12.0"
-val fs2DataVersion = "1.11.3"
+val fs2Version = "3.13.0"
+val fs2DataVersion = "1.12.1"
 val munitVersion = "1.0.0-M11"
 val munitCatsEffectVersion = "2.1.0"
 
@@ -129,7 +129,7 @@ lazy val docs = project
   .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm, json.jvm)
   .settings(
     libraryDependencies ++= Seq(
-      "io.circe" %%% "circe-generic" % "0.14.5",
+      "io.circe" %%% "circe-generic" % "0.14.15",
       "org.http4s" %%% "http4s-dsl" % http4sVersion,
       "org.http4s" %%% "http4s-circe" % http4sVersion,
       "org.gnieh" %%% "fs2-data-csv-generic" % fs2DataVersion,
