@@ -29,7 +29,7 @@ lazy val root =
     .disablePlugins(HeaderPlugin)
     .settings(libraryDependencies := Nil)
 
-val http4sVersion = "0.23.33"
+val http4sVersion = "0.23.34"
 val scalaXmlVersion = "2.2.0"
 val fs2Version = "3.12.2"
 val fs2DataVersion = "1.12.1"
