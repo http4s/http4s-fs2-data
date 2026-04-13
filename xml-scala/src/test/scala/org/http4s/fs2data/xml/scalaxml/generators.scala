@@ -429,16 +429,12 @@ object generators {
       Attribute(attr.pre, attr.key, attr.value, md)
     }
 
-  val genText: Gen[Text] =
-    for {
-      n <- Gen.poisson(5)
-      s <- Gen.stringOfN(n, Gen.oneOf(char))
-      // Text may not contain these two in literal form, §2.4 of XML syntax
-      // We replace them by empty strings instead of their quoted versions because Scala XML fails the roundtrip
-      // Relates to https://github.com/scala/scala-xml/issues/57
-      // Works around https://github.com/http4s/http4s-fs2-data/issues/88
-      r = s.replace("&", "").replace("<", "")
-    } yield Text(r)
+  val genText: Gen[Text] = {
+    // Replace special characters with their XML entity equivalents to ensure proper roundtrip
+    Gen.stringOf(Gen.oneOf(char))
+      .map(_.replace("&", "&amp;").replace("<", "&lt;"))
+      .map(Text(_))
+  }
 
   val genComment: Gen[Comment] =
     for {
