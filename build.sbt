@@ -29,12 +29,13 @@ lazy val root =
     .disablePlugins(HeaderPlugin)
     .settings(libraryDependencies := Nil)
 
-val http4sVersion = "0.23.33"
-val scalaXmlVersion = "2.2.0"
-val fs2Version = "3.12.2"
-val fs2DataVersion = "1.12.1"
-val munitVersion = "1.0.0-M11"
-val munitCatsEffectVersion = "2.1.0"
+val http4sVersion = "0.23.34"
+val scalaXmlVersion = "2.4.0"
+val fs2Version = "3.13.0"
+val fs2DataVersion = "1.14.0"
+val munitVersion = "1.3.0"
+val munitCatsEffectVersion = "2.2.0"
+val circeVersion = "0.14.15"
 
 lazy val xml = crossProject(JVMPlatform, JSPlatform, NativePlatform)
   .crossType(CrossType.Pure)
@@ -129,7 +130,7 @@ lazy val docs = project
   .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm, json.jvm)
   .settings(
     libraryDependencies ++= Seq(
-      "io.circe" %%% "circe-generic" % "0.14.15",
+      "io.circe" %%% "circe-generic" % circeVersion,
       "org.http4s" %%% "http4s-dsl" % http4sVersion,
       "org.http4s" %%% "http4s-circe" % http4sVersion,
       "org.gnieh" %%% "fs2-data-csv-generic" % fs2DataVersion,
