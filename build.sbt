@@ -25,7 +25,7 @@ ThisBuild / scalacOptions += "-Wconf:msg=package object inheritance is deprecate
 
 lazy val root =
   tlCrossRootProject
-    .aggregate(xml, xmlScala, csv, cbor, json)
+    .aggregate(xml, xmlScala, csv, cbor, json, msgpack)
     .disablePlugins(HeaderPlugin)
     .settings(libraryDependencies := Nil)
 
@@ -125,9 +125,26 @@ lazy val json = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     ),
   )
 
+lazy val msgpack = crossProject(JVMPlatform, JSPlatform, NativePlatform)
+  .crossType(CrossType.Pure)
+  .in(file("msgpack"))
+  .settings(
+    name := "http4s-fs2-data-msgpack",
+    description := "Provides MessagePack codecs for http4s via fs2-data",
+    startYear := Some(2026),
+    libraryDependencies ++= Seq(
+      "co.fs2" %%% "fs2-core" % fs2Version,
+      "org.http4s" %%% "http4s-core" % http4sVersion,
+      "org.gnieh" %%% "fs2-data-msgpack" % fs2DataVersion,
+      "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test,
+      "org.http4s" %%% "http4s-laws" % http4sVersion % Test,
+    ),
+  )
+
 lazy val docs = project
   .in(file("site"))
-  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm, json.jvm)
+  .dependsOn(xml.jvm, xmlScala.jvm, csv.jvm, cbor.jvm, json.jvm, msgpack.jvm)
   .settings(
     libraryDependencies ++= Seq(
       "io.circe" %%% "circe-generic" % circeVersion,

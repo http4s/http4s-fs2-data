@@ -154,6 +154,52 @@ curl -s -X "POST" "http://localhost:8080/csv/toCbor" \
 Then copy the output to [https://cbor.me](https://cbor.me) or a similar CBOR viewer. Make sure to view as `cborseq` otherwise the output will be truncated.
 
 
+## http4s-fs2-data-msgpack
+
+Provides basic support for parsing and encoding [MessagePack](https://msgpack.org/) streams that can be handled in a
+streaming fashion, either treating the in/output as a stream itself or as a single value. Uses
+`application/vnd.msgpack` as the media type.
+
+```scala
+libraryDependencies += "org.http4s" %% "http4s-fs2-data-msgpack" % "@VERSION@"
+```
+
+### Example
+
+This example consumes a CSV input and converts each row into a MessagePack array, streaming the result back.
+
+```scala mdoc
+import fs2.Stream
+import fs2.data.csv._
+import fs2.data.msgpack.high.ast.MsgpackValue
+import org.http4s.fs2data.csv._
+import org.http4s.fs2data.msgpack._
+
+class Csv2MsgpackHttpEndpoint[F[_]](implicit F: Async[F]) extends Http4sDsl[F] {
+
+  private implicit val decoder: EntityDecoder[F, Stream[F, Row]] = rowDecoder()
+
+  val service: HttpRoutes[F] = HttpRoutes.of {
+    case req @ POST -> Root / "csv" / "toMsgpack" =>
+      Ok(Stream.force(req.as[Stream[F, Row]]).map(toMsgpack))
+  }
+
+  private def toMsgpack(row: Row): MsgpackValue =
+    MsgpackValue.Array(row.values.toList.map(MsgpackValue.String(_)))
+}
+```
+
+You can try yourself with this snippet:
+
+```shell
+curl -s -X "POST" "http://localhost:8080/csv/toMsgpack" \
+     -H 'Content-Type: text/csv; charset=utf-8' \
+     -d $'1,Ene,Mene
+2,Muh,!' | od -A n -t x1
+```
+
+The response body is a concatenation of MessagePack-encoded arrays (one per CSV row), which can be decoded by any
+MessagePack-compatible client.
 
 ## http4s-fs2-data-json
 

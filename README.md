@@ -6,6 +6,7 @@ Home of http4s integrations with [fs2-data][fs2-data]. Initially forked from [ht
 * CSV
 * CBOR
 * JSON
+* MessagePack
 
 Check out the [docs][docs] for examples.
 
@@ -13,9 +14,9 @@ Check out the [docs][docs] for examples.
 
 http4s-fs2-data is built against http4s 0.23. If you're using a http4s-core 1.0 milestone, then you can use the following versions instead:
 
-|http4s-core|http4s-fs2-data|equivalent to main version of http4s-fs2-data|
-|---|---|-----|
-|1.0.0-M39|1.0.0-M40|0.2.0|
+| http4s-core | http4s-fs2-data | equivalent to main version of http4s-fs2-data |
+|-------------|-----------------|-----------------------------------------------|
+| 1.0.0-M39   | 1.0.0-M40       | 0.2.0                                         |
 
 [fs2-data]: https://fs2-data.gnieh.org/
 
