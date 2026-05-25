@@ -1,4 +1,4 @@
-addSbtPlugin("org.http4s" % "sbt-http4s-org" % "2.0.5")
+addSbtPlugin("org.http4s" % "sbt-http4s-org" % "2.0.6")
 
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.20.1")
 
